@@ -71,13 +71,13 @@ function Portrait({ m, sizes, priority = false, hint }: { m: Profile; sizes: str
         {m.films.length > 0 && (
           <>
             <span className="block font-title text-[2.1rem] leading-none text-white">{m.films.length}</span>
-            <span className="mt-1 block text-[0.56rem] font-bold tracking-[0.2em] whitespace-nowrap text-white/80 uppercase">
+            <span className="mt-1 block text-[max(0.56rem,9px)] font-bold tracking-[0.2em] whitespace-nowrap text-white/80 uppercase">
               {m.films.length === 1 ? "Film" : "Films"}
               {span && ` · ${span}`}
             </span>
           </>
         )}
-        <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[0.58rem] font-bold tracking-[0.16em] whitespace-nowrap text-[#2a1408] uppercase shadow-[0_8px_18px_-8px_rgba(0,0,0,0.6)]">
+        <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[max(0.58rem,9px)] font-bold tracking-[0.16em] whitespace-nowrap text-[#2a1408] uppercase shadow-[0_8px_18px_-8px_rgba(0,0,0,0.6)]">
           View profile
           <svg viewBox="0 0 16 16" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M3 8h10M9 4l4 4-4 4" />
@@ -92,9 +92,9 @@ function Caption({ m, className }: { m: Profile; className?: string }) {
   return (
     <div className={className}>
       <p className="font-display text-[1.35rem] leading-tight font-medium text-paper transition-colors duration-300 group-hover:text-saffron-deep">{m.name}</p>
-      <p className="mt-1 text-[0.6rem] font-bold tracking-[0.2em] text-gold uppercase">{m.role}</p>
+      <p className="mt-1 text-[max(0.6rem,9px)] font-bold tracking-[0.2em] text-gold uppercase">{m.role}</p>
       <p className="mt-2 text-[0.8rem] leading-relaxed text-mute">{m.line}</p>
-      <p className="mt-2.5 inline-flex items-center gap-1.5 text-[0.62rem] font-bold tracking-[0.18em] text-saffron-deep uppercase">
+      <p className="mt-2.5 inline-flex items-center gap-1.5 text-[max(0.62rem,9px)] font-bold tracking-[0.18em] text-saffron-deep uppercase">
         View profile <span aria-hidden="true" className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
       </p>
     </div>
@@ -169,24 +169,24 @@ function ProfileSheet({ m, onClose }: { m: Profile; onClose: () => void }) {
               <div className="mt-6 flex gap-8 border-y border-[#e8731a]/15 py-4">
                 <div>
                   <p className="font-display text-3xl text-[#c2520e]">{m.films.length}</p>
-                  <p className="mt-1 text-[0.6rem] font-bold tracking-[0.18em] text-[#9a7558] uppercase">Films produced</p>
+                  <p className="mt-1 text-[max(0.6rem,9px)] font-bold tracking-[0.18em] text-[#9a7558] uppercase">Films produced</p>
                 </div>
                 {span && (
                   <div>
                     <p className="font-display text-3xl text-[#c2520e]">{span}</p>
-                    <p className="mt-1 text-[0.6rem] font-bold tracking-[0.18em] text-[#9a7558] uppercase">First to latest film</p>
+                    <p className="mt-1 text-[max(0.6rem,9px)] font-bold tracking-[0.18em] text-[#9a7558] uppercase">First to latest film</p>
                   </div>
                 )}
               </div>
               <p className="mt-6 text-[0.98rem] leading-relaxed text-[#4a2712]">{m.bio}</p>
               {m.note && <p className="mt-3 text-sm leading-relaxed text-[#6f4b2f]">{m.note}</p>}
-              <p className="mt-6 text-[0.6rem] text-[#9a7558]">{m.credit}</p>
+              <p className="mt-6 text-[max(0.6rem,9px)] text-[#9a7558]">{m.credit}</p>
             </div>
           </div>
 
           {m.films.length > 0 && (
             <div className="border-t border-[#e8731a]/15 p-7 sm:p-10">
-              <p className="text-[0.66rem] font-bold tracking-[0.24em] text-[#c2520e] uppercase">Films</p>
+              <p className="text-[max(0.66rem,9px)] font-bold tracking-[0.24em] text-[#c2520e] uppercase">Films</p>
               <ul className="mt-5 grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-6">
                 {m.films.map((f) => (
                   <li key={f.slug}>
@@ -199,7 +199,7 @@ function ProfileSheet({ m, onClose }: { m: Profile; onClose: () => void }) {
                         )}
                       </span>
                       <span className="mt-1.5 block truncate text-[0.72rem] font-semibold text-[#2a1408] group-hover:text-[#c2520e]">{f.title}</span>
-                      {f.year && <span className="block text-[0.62rem] text-[#9a7558]">{f.year}</span>}
+                      {f.year && <span className="block text-[max(0.62rem,9px)] text-[#9a7558]">{f.year}</span>}
                     </Link>
                   </li>
                 ))}
@@ -320,7 +320,7 @@ export function Backbones({ members }: { members: Profile[] }) {
             </Reveal>
           ))}
         </div>
-        <p className="mt-10 text-[0.65rem] text-dim">{credits}</p>
+        <p className="mt-10 text-[max(0.65rem,9px)] text-dim">{credits}</p>
         {sheet}
       </section>
     );
@@ -348,7 +348,7 @@ export function Backbones({ members }: { members: Profile[] }) {
         {members.map((m, i) => (
           <Card key={m.name} m={m} i={i} p={p} l={l} onOpen={() => setOpen(m)} />
         ))}
-        <motion.p className="absolute inset-x-0 bottom-5 text-center text-[0.62rem] text-dim" style={{ opacity: headOpacity }}>
+        <motion.p className="absolute inset-x-0 bottom-5 text-center text-[max(0.62rem,9px)] text-dim" style={{ opacity: headOpacity }}>
           {credits}
         </motion.p>
       </div>

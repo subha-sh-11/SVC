@@ -450,7 +450,7 @@ export function Showreel({ films }: { films: Film[] }) {
         className="absolute right-3 z-30 flex items-center gap-2 rounded-full bg-black/40 py-2 pr-2 pl-2 text-white ring-1 ring-white/25 transition hover:bg-black/65 hover:ring-white/60 sm:right-5 md:top-[calc(50%+3.75rem)] md:right-5"
         style={wide ? undefined : { top: `calc(${BAND_TOP}px + 56.25vw - 3.25rem)` }}
       >
-        {blocked && <span className="pl-2 text-[0.66rem] font-bold tracking-[0.16em] uppercase">Tap for sound</span>}
+        {blocked && <span className="pl-2 text-[max(0.66rem,9px)] font-bold tracking-[0.16em] uppercase">Tap for sound</span>}
         <span className="grid h-8 w-8 place-items-center md:h-10 md:w-10">
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" stroke="none" />
@@ -494,7 +494,7 @@ export function Showreel({ films }: { films: Film[] }) {
               >
                 <span className="border-l-[3px] border-[#f2c230] bg-[rgba(51,51,51,0.6)] py-1.5 pr-8 pl-3 text-[0.8rem] font-medium whitespace-nowrap text-white">{up.banner}</span>
                 <span className="rounded-[6px] bg-black/45 px-5 py-4 text-right ring-1 ring-white/15">
-                  <span className="block text-[0.58rem] font-bold tracking-[0.28em] text-white/55 uppercase">Release</span>
+                  <span className="block text-[max(0.58rem,9px)] font-bold tracking-[0.28em] text-white/55 uppercase">Release</span>
                   <span className="mt-1 block font-title text-[clamp(1.2rem,1.8vw,1.8rem)] leading-tight text-white">{up.when}</span>
                 </span>
               </motion.div>

@@ -95,7 +95,7 @@ export function Gallery({ assets }: { assets: Asset[] }) {
               className="h-auto w-full transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
             />
             <span className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ink/90 via-ink/10 to-transparent p-4 opacity-0 transition duration-500 group-hover:opacity-100">
-              <span className="text-[0.6rem] font-bold tracking-[0.2em] text-gold uppercase">{a.film ?? assetGroup(a)}</span>
+              <span className="text-[max(0.6rem,9px)] font-bold tracking-[0.2em] text-gold uppercase">{a.film ?? assetGroup(a)}</span>
               <span className="mt-1 line-clamp-2 text-xs text-paper/90">{a.title}</span>
             </span>
           </motion.button>
@@ -119,7 +119,7 @@ export function Gallery({ assets }: { assets: Asset[] }) {
                   <p className="tabular-nums tracking-[0.06em] text-xs text-mute">
                     <span className="text-gold">{String(open! + 1).padStart(2, "0")}</span> / {String(list.length).padStart(2, "0")}
                   </p>
-                  <button onClick={close} autoFocus className="rounded-[2px] border border-paper/20 px-4 py-2 text-[0.65rem] font-bold tracking-[0.2em] uppercase hover:border-gold hover:text-gold">
+                  <button onClick={close} autoFocus className="rounded-[2px] border border-paper/20 px-4 py-2 text-[max(0.65rem,9px)] font-bold tracking-[0.2em] uppercase hover:border-gold hover:text-gold">
                     Close ✕
                   </button>
                 </div>
@@ -146,7 +146,7 @@ export function Gallery({ assets }: { assets: Asset[] }) {
                   </button>
                 </div>
                 <div className="shell shrink-0 py-6">
-                  <p className="text-[0.62rem] font-bold tracking-[0.2em] text-gold uppercase">
+                  <p className="text-[max(0.62rem,9px)] font-bold tracking-[0.2em] text-gold uppercase">
                     {current.film ?? assetGroup(current)} · {current.type}
                   </p>
                   <p className="mt-2 max-w-3xl text-sm text-paper/90">{current.title}</p>

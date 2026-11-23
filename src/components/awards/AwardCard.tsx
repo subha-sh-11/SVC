@@ -86,7 +86,7 @@ export function AwardCard({ set, art, priority = false }: { set: AwardSet; art: 
       )}
       {pic?.clip && <CardClip src={pic.clip} focus={pic.focus} />}
       {pic?.clip && (
-        <span className="pointer-events-none absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[0.56rem] font-bold tracking-[0.16em] text-white uppercase">
+        <span className="pointer-events-none absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[max(0.56rem,9px)] font-bold tracking-[0.16em] text-white uppercase">
           <span className="h-1.5 w-1.5 rounded-full bg-[#ff4d3d]" aria-hidden="true" />
           Ceremony footage
         </span>
@@ -104,7 +104,7 @@ export function AwardCard({ set, art, priority = false }: { set: AwardSet; art: 
         picture
       )}
 
-      <p className="mt-4 flex items-baseline justify-between gap-4 text-[0.62rem] font-semibold tracking-[0.18em] text-[#8a6a52] uppercase">
+      <p className="mt-4 flex items-baseline justify-between gap-4 text-[max(0.62rem,9px)] font-semibold tracking-[0.18em] text-[#8a6a52] uppercase">
         <span className="min-w-0 truncate">
           {set.label}
           {when && ` · ${when}`}
@@ -134,12 +134,12 @@ export function AwardCard({ set, art, priority = false }: { set: AwardSet; art: 
         })}
       </ul>
       {more > 0 && (
-        <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="mt-2.5 text-[0.64rem] font-bold tracking-[0.16em] text-saffron-deep uppercase hover:underline">
+        <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="mt-2.5 text-[max(0.64rem,9px)] font-bold tracking-[0.16em] text-saffron-deep uppercase hover:underline">
           {open ? "Show fewer" : `+ ${more} more`}
         </button>
       )}
       {(pic?.depicts || pic?.credit) && (
-        <p className="mt-2 line-clamp-2 text-[0.62rem] leading-relaxed text-[#a08670]" title={[pic.depicts, pic.credit && `(${pic.clip ? "Footage" : "Photo"}: ${pic.credit})`].filter(Boolean).join(" ")}>
+        <p className="mt-2 line-clamp-2 text-[max(0.62rem,9px)] leading-relaxed text-[#a08670]" title={[pic.depicts, pic.credit && `(${pic.clip ? "Footage" : "Photo"}: ${pic.credit})`].filter(Boolean).join(" ")}>
           {pic.depicts}
           {pic.depicts && pic.credit && " "}
           {pic.credit && <span className="whitespace-nowrap">({pic.clip ? "Footage" : "Photo"}: {pic.credit})</span>}

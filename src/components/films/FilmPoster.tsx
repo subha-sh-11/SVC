@@ -38,7 +38,7 @@ export function FilmPoster({
       <span className="display pointer-events-none absolute -right-4 -bottom-8 text-[9rem] leading-none text-paper/[0.04] select-none">{initials(title)}</span>
       <div className="absolute inset-3 border border-gold/20" />
       <div className="relative m-auto flex flex-col items-center px-6 text-center">
-        <span className="eyebrow text-[0.55rem] text-gold/80">SVC Archive</span>
+        <span className="eyebrow text-[max(0.55rem,9px)] text-gold/80">SVC Archive</span>
         <span className="display mt-3 text-2xl text-paper sm:text-3xl">{title}</span>
         {year && <span className="mt-2 text-xs tracking-[0.3em] text-mute">{year}</span>}
       </div>

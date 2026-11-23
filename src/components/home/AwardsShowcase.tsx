@@ -141,19 +141,19 @@ export function AwardsShowcase() {
                 animate={{ opacity: 1, x: 0, transition: { duration: 0.7, ease: EASE } }}
                 exit={{ opacity: 0, x: -10, transition: { duration: 0.3 } }}
               >
-                <p className="text-[0.66rem] font-bold tracking-[0.24em] text-gold uppercase">{a.edition}</p>
+                <p className="text-[max(0.66rem,9px)] font-bold tracking-[0.24em] text-gold uppercase">{a.edition}</p>
                 <h3 className="display mt-3 text-4xl sm:text-5xl">{a.film}</h3>
                 <p className="mt-2 text-xs text-dim">
                   {a.banner} · {a.detail}
                 </p>
-                <p className="mt-6 text-[0.66rem] font-bold tracking-[0.2em] text-paper/70 uppercase">
+                <p className="mt-6 text-[max(0.66rem,9px)] font-bold tracking-[0.2em] text-paper/70 uppercase">
                   {a.medal} · {a.category}
                 </p>
                 <p className="mt-3 text-[0.98rem] leading-relaxed text-paper/90">{a.desc}</p>
                 <p className="mt-4 text-[0.82rem] leading-relaxed text-mute">
                   {a.photo.caption}, {a.photo.date}.
                 </p>
-                <p className="mt-2 text-[0.66rem] text-dim">Photo: {a.photo.credit}</p>
+                <p className="mt-2 text-[max(0.66rem,9px)] text-dim">Photo: {a.photo.credit}</p>
               </motion.div>
             </AnimatePresence>
             <div className="mt-8 flex flex-wrap items-center gap-6">

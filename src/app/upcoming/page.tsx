@@ -51,14 +51,14 @@ function FilmCard({ item, p }: { item: SlateItem; p: UpcomingProject }) {
         ) : (
           <div className="absolute inset-0 flex items-end justify-between bg-[linear-gradient(140deg,#f2c230,#e8731a_40%,#9a3c08)] p-8">
             <span className="font-title text-[clamp(4rem,9vw,7.5rem)] leading-[0.8] text-[#fdf1ce]">{p.title}</span>
-            <span className="mb-1 text-right text-[0.64rem] font-bold tracking-[0.22em] text-[#fdf1ce]/90 uppercase">
+            <span className="mb-1 text-right text-[max(0.64rem,9px)] font-bold tracking-[0.22em] text-[#fdf1ce]/90 uppercase">
               Title
               <br />
               to be announced
             </span>
           </div>
         )}
-        <span className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-[0.6rem] font-bold tracking-[0.2em] text-[#9a3c08] uppercase shadow">
+        <span className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-[max(0.6rem,9px)] font-bold tracking-[0.2em] text-[#9a3c08] uppercase shadow">
           <span className="h-1.5 w-1.5 rounded-full bg-[#e8731a]" aria-hidden="true" />
           {statusLabel(p.status)}
         </span>
@@ -66,7 +66,7 @@ function FilmCard({ item, p }: { item: SlateItem; p: UpcomingProject }) {
       <div className="flex flex-1 flex-col p-7 sm:p-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-[0.66rem] font-bold tracking-[0.22em] text-gold uppercase">{releaseLabel(p.release)}</p>
+            <p className="text-[max(0.66rem,9px)] font-bold tracking-[0.22em] text-gold uppercase">{releaseLabel(p.release)}</p>
             <h2 className="display mt-2 text-3xl sm:text-4xl">{p.title}</h2>
           </div>
           {item.logo && (
@@ -129,7 +129,7 @@ export default function UpcomingPage() {
               {slate.map(({ item, p }) => (
                 <li key={p.slug} className="shrink-0">
                   <a href={`#${p.slug}`} className="block rounded-full bg-white px-5 py-3 ring-1 ring-black/[0.06] transition hover:ring-gold">
-                    <span className="block text-[0.6rem] font-bold tracking-[0.2em] text-gold uppercase">{item.when}</span>
+                    <span className="block text-[max(0.6rem,9px)] font-bold tracking-[0.2em] text-gold uppercase">{item.when}</span>
                     <span className="mt-0.5 block text-sm font-semibold text-paper">{p.title}</span>
                   </a>
                 </li>
@@ -159,8 +159,8 @@ export default function UpcomingPage() {
               {more.map((p) => (
                 <article key={p.slug} className="rounded-2xl bg-white p-7 ring-1 ring-black/[0.06]">
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <span className="text-[0.62rem] font-bold tracking-[0.2em] text-gold uppercase">{statusLabel(p.status)}</span>
-                    <span className="text-[0.62rem] font-semibold tracking-[0.16em] text-dim uppercase">{releaseLabel(p.release)}</span>
+                    <span className="text-[max(0.62rem,9px)] font-bold tracking-[0.2em] text-gold uppercase">{statusLabel(p.status)}</span>
+                    <span className="text-[max(0.62rem,9px)] font-semibold tracking-[0.16em] text-dim uppercase">{releaseLabel(p.release)}</span>
                   </div>
                   <h3 className="display mt-3 text-2xl">{p.title}</h3>
                   <p className="mt-2 text-sm text-mute">{[p.cast.join(", "), p.director && `Directed by ${p.director}`].filter(Boolean).join(" · ")}</p>

@@ -34,7 +34,7 @@ export function HomeHero() {
       <motion.a
         href="#the-banner"
         aria-label="Scroll to The banner"
-        className="absolute bottom-5 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-[0.58rem] font-semibold tracking-[0.34em] text-[#9a7558] uppercase"
+        className="absolute bottom-5 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 short:hidden text-[max(0.58rem,9px)] font-semibold tracking-[0.34em] text-[#9a7558] uppercase"
         initial={{ opacity: 0 }}
         animate={{ opacity: done ? 1 : 0 }}
         transition={{ delay: done ? 0.9 : 0, duration: 0.8 }}

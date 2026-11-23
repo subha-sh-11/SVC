@@ -213,7 +213,7 @@ function Extras({ show }: { show: boolean }) {
       animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
       transition={{ duration: 0.9, ease: EASE, delay: show ? 0.25 : 0 }}
     >
-      <p className="flex items-center gap-3 text-[0.66rem] font-semibold tracking-[0.34em] text-[#9a7558] uppercase sm:text-[0.72rem]">
+      <p className="flex items-center gap-3 text-[max(0.66rem,9px)] font-semibold tracking-[0.34em] text-[#9a7558] uppercase sm:text-[0.72rem]">
         <span className="hidden h-px w-8 bg-gradient-to-r from-transparent to-[#e8731a] sm:block" />
         Telugu cinema since 2003 · Hyderabad
         <span className="hidden h-px w-8 bg-gradient-to-l from-transparent to-[#e8731a] sm:block" />
@@ -261,7 +261,7 @@ export function SvcLockup({
   const branded = still || stage === "brand";
   return (
     <div className="flex flex-col items-center gap-[clamp(1.1rem,3vh,2.5rem)]">
-      <div className="flex items-center gap-[clamp(0.75rem,2.4vw,2.5rem)] [--lw:min(68vw,1240px)] sm:[--lw:min(62vw,1240px)]">
+      <div className="flex items-center gap-[clamp(0.75rem,2.4vw,2.5rem)] [--lw:min(68vw,1240px)] sm:[--lw:min(62vw,1240px,110svh)]">
         <div className="relative aspect-[606/906] h-[calc(var(--lw)/2.72*1.22)] shrink-0" style={{ visibility: branded ? "visible" : "hidden" }}>
           <motion.div
             key={branded ? "on" : "off"}

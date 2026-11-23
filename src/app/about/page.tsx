@@ -76,7 +76,7 @@ export default function AboutPage() {
                 <Image src={m.image} alt={`${m.name}, ${m.role}`} fill sizes="(min-width: 1024px) 22vw, 46vw" className="object-cover object-[50%_25%]" />
               </div>
               <p className="display mt-4 text-xl">{m.name}</p>
-              <p className="mt-1 text-[0.62rem] font-bold tracking-[0.2em] text-gold uppercase">{m.role}</p>
+              <p className="mt-1 text-[max(0.62rem,9px)] font-bold tracking-[0.2em] text-gold uppercase">{m.role}</p>
             </Reveal>
           ))}
         </div>

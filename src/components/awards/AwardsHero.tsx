@@ -33,7 +33,7 @@ function StageCard({ p, priority }: { p: AwardPhoto; priority: boolean }) {
           className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
         />
       </div>
-      <p className="mt-4 text-[0.6rem] leading-relaxed font-bold tracking-[0.16em] text-gold uppercase">{p.award}</p>
+      <p className="mt-4 text-[max(0.6rem,9px)] leading-relaxed font-bold tracking-[0.16em] text-gold uppercase">{p.award}</p>
       <p className="mt-1.5 text-[0.92rem] leading-snug font-medium text-paper">{p.caption}</p>
       <p className="mt-1.5 text-xs text-dim">
         {p.film && <span className="font-semibold text-mute transition-colors group-hover:text-gold">{p.film}</span>}

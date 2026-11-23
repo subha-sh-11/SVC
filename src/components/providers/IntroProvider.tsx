@@ -72,7 +72,7 @@ function BrandLockup() {
         <span className="h-2 w-2 rotate-45 bg-gold" />
         <span className="h-px flex-1 bg-gradient-to-l from-transparent to-gold-deep" />
       </div>
-      <p className="mt-5 text-[0.66rem] font-semibold tracking-[0.42em] text-ink-700 uppercase sm:text-xs">{TAGLINE}</p>
+      <p className="mt-5 text-[max(0.66rem,9px)] font-semibold tracking-[0.42em] text-ink-700 uppercase sm:text-xs">{TAGLINE}</p>
     </div>
   );
 }

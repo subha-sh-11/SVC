@@ -80,7 +80,7 @@ function Words({
   const roleOpacity = useTransform(progress, (v) => between(v, 0.91, 0.96));
   return (
     <>
-      <p className="flex items-center gap-3 text-[0.66rem] font-bold tracking-[0.32em] text-saffron-deep uppercase">
+      <p className="flex items-center gap-3 text-[max(0.66rem,9px)] font-bold tracking-[0.32em] text-saffron-deep uppercase">
         <span className="h-px w-8 bg-saffron-deep/60" aria-hidden="true" />
         In his words
       </p>
@@ -105,7 +105,7 @@ function Words({
       <motion.p style={{ clipPath: signClip }} className="mt-4 inline-block font-hand text-[clamp(2rem,2.8vw,2.9rem)] leading-none font-semibold text-saffron-deep">
         Dil Raju
       </motion.p>
-      <motion.p style={{ opacity: roleOpacity }} className="mt-1 text-[0.58rem] font-semibold tracking-[0.22em] text-[#6f4b2f] uppercase">
+      <motion.p style={{ opacity: roleOpacity }} className="mt-1 text-[max(0.58rem,9px)] font-semibold tracking-[0.22em] text-[#6f4b2f] uppercase">
         Founder &amp; producer · {clip.context}
       </motion.p>
       <ClipBars index={index} fill={fill} go={go} />
@@ -116,12 +116,12 @@ function Words({
             setSoundOn(false);
             openTrailer({ youtubeId: clip.videoId, title: "Dil Raju", label: clip.context, start: clip.start });
           }}
-          className="rounded-full border border-[#2a1408]/25 px-4 py-2.5 text-[0.66rem] font-bold tracking-[0.14em] text-[#2a1408] uppercase transition hover:border-[#2a1408]/60"
+          className="rounded-full border border-[#2a1408]/25 px-4 py-2.5 text-[max(0.66rem,9px)] font-bold tracking-[0.14em] text-[#2a1408] uppercase transition hover:border-[#2a1408]/60"
         >
           Watch full video
         </button>
       </div>
-      <p className="mt-3 text-[0.6rem] text-[#6f4b2f]/80">
+      <p className="mt-3 text-[max(0.6rem,9px)] text-[#6f4b2f]/80">
         Video: {clip.uploader}
         {clip.translated ? " · translated from Telugu" : ""}
       </p>

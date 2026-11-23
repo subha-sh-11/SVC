@@ -66,7 +66,7 @@ export default async function FilmPage({ params }: Props) {
                 .filter(([, v]) => v)
                 .map(([k, v]) => (
                   <div key={k} className="grid gap-1 py-4 sm:grid-cols-[11rem_1fr] sm:gap-6">
-                    <dt className="text-[0.65rem] font-bold tracking-[0.2em] text-gold uppercase sm:pt-0.5">{k}</dt>
+                    <dt className="text-[max(0.65rem,9px)] font-bold tracking-[0.2em] text-gold uppercase sm:pt-0.5">{k}</dt>
                     <dd className="text-[0.95rem] leading-relaxed text-paper/90">{v}</dd>
                   </div>
                 ))}
@@ -103,7 +103,7 @@ export default async function FilmPage({ params }: Props) {
                     </li>
                   ))}
                 </ul>
-                <Link href="/awards" className="mt-6 inline-flex items-center gap-2 text-[0.65rem] font-bold tracking-[0.2em] text-gold uppercase hover:text-gold-bright">
+                <Link href="/awards" className="mt-6 inline-flex items-center gap-2 text-[max(0.65rem,9px)] font-bold tracking-[0.2em] text-gold uppercase hover:text-gold-bright">
                   All awards <ArrowIcon />
                 </Link>
               </div>
@@ -148,7 +148,7 @@ export default async function FilmPage({ params }: Props) {
       {film.sources.length > 0 && (
         <section className="shell py-10">
           <details className="group border-t border-gold/15 pt-6">
-            <summary className="flex cursor-pointer list-none items-center justify-between text-[0.65rem] font-bold tracking-[0.22em] text-mute uppercase hover:text-paper">
+            <summary className="flex cursor-pointer list-none items-center justify-between text-[max(0.65rem,9px)] font-bold tracking-[0.22em] text-mute uppercase hover:text-paper">
               Sources & references ({film.sources.length})
               <span className="text-lg transition group-open:rotate-45">+</span>
             </summary>
@@ -176,7 +176,7 @@ export default async function FilmPage({ params }: Props) {
               {f.image && (
                 <Image src={f.image} alt="" fill sizes="50vw" className="object-cover opacity-0 transition duration-700 group-hover:scale-105 group-hover:opacity-30" />
               )}
-              <span className="relative text-[0.65rem] font-bold tracking-[0.22em] text-gold uppercase">
+              <span className="relative text-[max(0.65rem,9px)] font-bold tracking-[0.22em] text-gold uppercase">
                 {dir} · {f.year}
               </span>
               <span className="display relative mt-3 block text-4xl transition group-hover:text-gold-bright sm:text-5xl">{f.title}</span>

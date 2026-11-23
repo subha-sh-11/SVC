@@ -8,7 +8,7 @@ export function RoleBadge({ film, className }: { film: Pick<Film, "category" | "
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-[2px] border px-2.5 py-1 text-[0.6rem] font-bold tracking-[0.18em] uppercase backdrop-blur-sm",
+        "inline-flex items-center gap-1.5 rounded-[2px] border px-2.5 py-1 text-[max(0.6rem,9px)] font-bold tracking-[0.18em] uppercase backdrop-blur-sm",
         film.category === "core" && "border-gold/50 bg-ink/50 text-gold-bright",
         film.category === "presentation" && "border-paper/25 bg-ink/50 text-paper/80",
         film.category === "related" && "border-vermilion/50 bg-ink/50 text-[#ffb3ab]",

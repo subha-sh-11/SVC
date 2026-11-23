@@ -42,7 +42,7 @@ export function DistributionIndex({ records }: { records: DistributionRecord[] }
           className="w-full border-b border-paper/20 bg-transparent py-2 text-sm outline-none placeholder:text-dim focus:border-gold md:max-w-xs"
         />
         <div className="flex flex-wrap items-center gap-2">
-          <span className="mr-1 text-[0.6rem] font-bold tracking-[0.2em] text-dim uppercase">Territory</span>
+          <span className="mr-1 text-[max(0.6rem,9px)] font-bold tracking-[0.2em] text-dim uppercase">Territory</span>
           {FILTERS.map((f) => (
             <button
               key={f}
@@ -75,7 +75,7 @@ export function DistributionIndex({ records }: { records: DistributionRecord[] }
                 const inner = (
                   <>
                     <span className="text-sm text-paper">{r.film}</span>
-                    <span className="text-[0.62rem] tracking-[0.06em] text-dim">{r.territory}</span>
+                    <span className="text-[max(0.62rem,9px)] tracking-[0.06em] text-dim">{r.territory}</span>
                   </>
                 );
                 return (

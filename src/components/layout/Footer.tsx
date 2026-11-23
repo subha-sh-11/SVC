@@ -87,7 +87,7 @@ export function Footer() {
         <div className="flex max-w-[42rem] flex-col items-center text-center md:items-end md:pb-14 md:text-right">
           <Link href="/" aria-label="Sri Venkateswara Creations, home" className="flex flex-col items-center md:items-end">
             <span aria-hidden="true" className="svc-mark svc-mark--light block aspect-[2003/736] h-12 sm:h-14" />
-            <span className="mt-2 text-[0.62rem] font-bold tracking-[0.34em] text-paper/75 uppercase">Sri Venkateswara Creations</span>
+            <span className="mt-2 text-[max(0.62rem,9px)] font-bold tracking-[0.34em] text-paper/75 uppercase">Sri Venkateswara Creations</span>
           </Link>
 
           <ul className="mt-6 flex items-center gap-5" aria-label="Follow SVC">

@@ -39,7 +39,7 @@ export function DetailHero({ film }: { film: Film }) {
       <div className="absolute inset-0 bg-[linear-gradient(0deg,#1f0f06_2%,rgba(31,15,6,0.2)_45%,rgba(31,15,6,0.55)_100%)]" />
 
       <motion.div className="shell relative pt-40 pb-16 sm:pb-20" style={{ opacity: fade }}>
-        <motion.nav aria-label="Breadcrumb" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }} className="flex items-center gap-2 text-[0.65rem] font-bold tracking-[0.22em] text-mute uppercase">
+        <motion.nav aria-label="Breadcrumb" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }} className="flex items-center gap-2 text-[max(0.65rem,9px)] font-bold tracking-[0.22em] text-mute uppercase">
           <Link href="/films" className="transition hover:text-gold">
             Films
           </Link>
@@ -49,7 +49,7 @@ export function DetailHero({ film }: { film: Film }) {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.8 }} className="mt-6 flex flex-wrap items-center gap-3">
           <RoleBadge film={film} />
           <span className="text-xs text-mute">{film.language}</span>
-          {film.isSeries && <span className="rounded-[2px] border border-paper/20 px-2.5 py-1 text-[0.6rem] font-bold tracking-[0.18em] text-paper/80 uppercase">Web series</span>}
+          {film.isSeries && <span className="rounded-[2px] border border-paper/20 px-2.5 py-1 text-[max(0.6rem,9px)] font-bold tracking-[0.18em] text-paper/80 uppercase">Web series</span>}
         </motion.div>
         <SplitWords as="h1" text={film.title} trigger className="display mt-6 block max-w-5xl text-[2.6rem] sm:text-6xl lg:text-[6.2rem]" stagger={0.07} delay={0.3} />
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75, duration: 0.9 }} className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm">

@@ -23,7 +23,7 @@ type Open = (m: Milestone, from: HTMLElement) => void;
 function ReelHeading({ heading }: { heading: Heading }) {
   return (
     <div>
-      <p className="text-[0.62rem] font-bold tracking-[0.26em] text-saffron-deep uppercase">{heading.eyebrow}</p>
+      <p className="text-[max(0.62rem,9px)] font-bold tracking-[0.26em] text-saffron-deep uppercase">{heading.eyebrow}</p>
       <h2 className="display mt-2 text-3xl leading-none sm:text-4xl">{heading.title}</h2>
     </div>
   );
@@ -32,7 +32,7 @@ function ReelHeading({ heading }: { heading: Heading }) {
 /** "Read more", under each card: the whole card opens its story. */
 function ReadMore() {
   return (
-    <span className="mt-4 inline-flex items-center gap-2 text-[0.65rem] font-bold tracking-[0.2em] text-saffron-deep uppercase">
+    <span className="mt-4 inline-flex items-center gap-2 text-[max(0.65rem,9px)] font-bold tracking-[0.2em] text-saffron-deep uppercase">
       Read more
       <span aria-hidden="true" className="grid h-5 w-5 place-items-center rounded-full bg-saffron-deep text-[0.8rem] leading-none text-white transition-transform duration-300 group-hover:rotate-90">
         +
@@ -129,18 +129,21 @@ function HorizontalTimeline({ items, label, heading, onOpen }: { items: Mileston
           {/* Rail */}
           <div className="absolute top-1/2 right-0 left-0 h-px bg-gold/15" />
           {items.map((m, i) => (
-            <article key={`${m.date}-${m.title}`} className={`group relative flex w-[30rem] shrink-0 flex-col ${i % 2 ? "translate-y-[12%]" : "-translate-y-[12%]"}`}>
+            <article
+              key={`${m.date}-${m.title}`}
+              className={`group relative flex w-[30rem] shrink-0 flex-col ${i % 2 ? "translate-y-[12%] short:translate-y-[4%]" : "-translate-y-[12%] short:-translate-y-[4%]"}`}
+            >
               <div className="relative transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5">
-                <MilestoneImage m={m} sizes="480px" className="transition-shadow duration-500 group-hover:shadow-[0_30px_50px_-24px_rgba(59,26,7,0.6)]" />
+                <MilestoneImage m={m} sizes="480px" className="transition-shadow duration-500 group-hover:shadow-[0_30px_50px_-24px_rgba(59,26,7,0.6)] short:aspect-[2.2/1]" />
                 <span className="absolute -bottom-3 left-6 h-6 w-6 rounded-full border border-gold bg-ink shadow-sm">
                   <span className="absolute inset-1.5 rounded-full bg-gold" />
                 </span>
               </div>
-              <div className="mt-8 pr-6">
+              <div className="mt-8 pr-6 short:mt-6">
                 <p className="tabular-nums tracking-[0.06em] text-xs text-gold">{displayDate(m)}</p>
-                <p className="mt-3 text-[0.62rem] font-bold tracking-[0.22em] text-mute uppercase">{m.type}</p>
-                <h3 className="display mt-2 text-4xl transition-colors group-hover:text-saffron-deep">{m.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-mute">{m.description}</p>
+                <p className="mt-3 text-[max(0.62rem,9px)] font-bold tracking-[0.22em] text-mute uppercase short:mt-2">{m.type}</p>
+                <h3 className="display mt-2 text-4xl transition-colors group-hover:text-saffron-deep short:text-3xl">{m.title}</h3>
+                <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-mute short:mt-2 short:line-clamp-2">{m.description}</p>
                 <ReadMore />
               </div>
               <CardButton m={m} onOpen={onOpen} />
@@ -183,7 +186,7 @@ function VerticalTimeline({ items, label, heading, onOpen }: { items: Milestone[
               <span className="absolute inset-1.5 rounded-full bg-gold" />
             </span>
             <p className="tabular-nums tracking-[0.06em] text-xs text-gold">{displayDate(m)}</p>
-            <p className="mt-2 text-[0.62rem] font-bold tracking-[0.22em] text-mute uppercase">{m.type}</p>
+            <p className="mt-2 text-[max(0.62rem,9px)] font-bold tracking-[0.22em] text-mute uppercase">{m.type}</p>
             <h3 className="display mt-2 text-4xl">{m.title}</h3>
             <div className="mt-5">
               <MilestoneImage m={m} sizes="100vw" />

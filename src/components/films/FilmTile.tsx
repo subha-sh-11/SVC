@@ -127,7 +127,7 @@ export function FilmTile({
             {film.premise && (
               <p className={cn("mt-3 leading-relaxed text-paper/80", big ? "text-[clamp(0.9rem,1.15cqw,1.08rem)]" : "line-clamp-6 text-[clamp(0.74rem,0.88cqw,0.84rem)]")}>{film.premise}</p>
             )}
-            <span className="mt-auto inline-flex items-center gap-2 pt-3 text-[0.64rem] font-bold tracking-[0.16em] text-saffron-deep uppercase">
+            <span className="mt-auto inline-flex items-center gap-2 pt-3 text-[max(0.64rem,9px)] font-bold tracking-[0.16em] text-saffron-deep uppercase">
               <svg viewBox="0 0 16 16" className="h-3 w-3" fill="currentColor" aria-hidden="true">
                 <path d="M4 2.5v11l9-5.5-9-5.5z" />
               </svg>
@@ -160,7 +160,7 @@ export function ComingSoonTile({ titles }: { titles: { title: string; release: s
   return (
     <article className="relative flex h-full flex-col">
       <div className="@container flex min-h-0 flex-1 flex-col justify-center rounded-[8px] border border-paper/15 p-[clamp(1rem,6cqw,2.5rem)]">
-        <p className="text-[0.62rem] font-bold tracking-[0.26em] text-saffron-deep uppercase">Coming soon</p>
+        <p className="text-[max(0.62rem,9px)] font-bold tracking-[0.26em] text-saffron-deep uppercase">Coming soon</p>
         <ul className="mt-4 space-y-2 text-[clamp(0.85rem,4cqw,1.05rem)] @xl:text-[clamp(0.9rem,2.2cqw,1.1rem)]">
           {titles.map((t) => (
             <li key={t.title} className="flex items-baseline justify-between gap-4 border-b border-paper/[0.08] pb-2">

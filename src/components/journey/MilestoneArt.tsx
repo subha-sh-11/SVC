@@ -59,7 +59,7 @@ export function MilestoneImage({ m, sizes, className }: { m: Milestone; sizes: s
         </div>
       )}
       {m.badge && (
-        <span className="absolute top-3 left-3 z-20 rounded-full bg-black/55 px-3 py-1 text-[0.6rem] font-bold tracking-[0.18em] text-white uppercase backdrop-blur-sm">{m.badge}</span>
+        <span className="absolute top-3 left-3 z-20 rounded-full bg-black/55 px-3 py-1 text-[max(0.6rem,9px)] font-bold tracking-[0.18em] text-white uppercase backdrop-blur-sm">{m.badge}</span>
       )}
     </div>
   );

@@ -55,14 +55,14 @@ export function EnquiryForm() {
             </motion.span>
             <h3 className="display mt-6 text-4xl">Thank you.</h3>
             <p className="mt-3 max-w-md text-mute">Your {category.toLowerCase()} enquiry has been received.</p>
-            <button onClick={() => setStatus("idle")} className="mt-8 text-[0.65rem] font-bold tracking-[0.2em] text-gold uppercase hover:text-gold-bright">
+            <button onClick={() => setStatus("idle")} className="mt-8 text-[max(0.65rem,9px)] font-bold tracking-[0.2em] text-gold uppercase hover:text-gold-bright">
               Send another →
             </button>
           </motion.div>
         ) : (
           <motion.form key="form" onSubmit={onSubmit} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -10 }} className="space-y-10" noValidate={false}>
             <fieldset>
-              <legend className="text-[0.62rem] font-bold tracking-[0.2em] text-dim uppercase">Enquiry type</legend>
+              <legend className="text-[max(0.62rem,9px)] font-bold tracking-[0.2em] text-dim uppercase">Enquiry type</legend>
               <div className="mt-4 flex flex-wrap gap-2">
                 {CATEGORIES.map((c) => (
                   <button
@@ -109,7 +109,7 @@ function Field({ name, label, type = "text", textarea, required, autoComplete }:
       ) : (
         <input name={name} type={type} required={required} autoComplete={autoComplete} placeholder={label} className={cls} />
       )}
-      <span className="pointer-events-none absolute top-0 left-0 text-[0.65rem] font-bold tracking-[0.18em] text-gold uppercase transition-all duration-300 peer-placeholder-shown:top-6 peer-placeholder-shown:text-base peer-placeholder-shown:font-normal peer-placeholder-shown:tracking-normal peer-placeholder-shown:text-dim peer-placeholder-shown:normal-case peer-focus:top-0 peer-focus:text-[0.65rem] peer-focus:font-bold peer-focus:tracking-[0.18em] peer-focus:text-gold peer-focus:uppercase">
+      <span className="pointer-events-none absolute top-0 left-0 text-[max(0.65rem,9px)] font-bold tracking-[0.18em] text-gold uppercase transition-all duration-300 peer-placeholder-shown:top-6 peer-placeholder-shown:text-base peer-placeholder-shown:font-normal peer-placeholder-shown:tracking-normal peer-placeholder-shown:text-dim peer-placeholder-shown:normal-case peer-focus:top-0 peer-focus:text-[max(0.65rem,9px)] peer-focus:font-bold peer-focus:tracking-[0.18em] peer-focus:text-gold peer-focus:uppercase">
         {label}
         {required && " *"}
       </span>

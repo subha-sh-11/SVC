@@ -61,7 +61,7 @@ function VentureCard({ v, i, onActive }: { v: Venture; i: number; onActive: (i: 
   return (
     <li ref={ref} id={`venture-${v.key}`} className="scroll-mt-24">
       <Reveal y={48}>
-        <figure className="group relative aspect-[16/9] overflow-hidden rounded-[20px] bg-[#f1e4cf] shadow-[0_34px_70px_-34px_rgba(59,26,7,0.55)] ring-1 ring-black/[0.05]">
+        <figure className="group relative aspect-[16/9] overflow-hidden rounded-[20px] short:aspect-[2.2/1] bg-[#f1e4cf] shadow-[0_34px_70px_-34px_rgba(59,26,7,0.55)] ring-1 ring-black/[0.05]">
           <Image
             src={v.image.src}
             alt={v.image.alt}
@@ -85,7 +85,7 @@ function VentureCard({ v, i, onActive }: { v: Venture; i: number; onActive: (i: 
           {v.inset && (
             <span className="absolute right-4 bottom-4 w-[42%] overflow-hidden rounded-[10px] shadow-[0_18px_40px_-14px_rgba(0,0,0,0.8)] ring-1 ring-white/25 sm:right-5 sm:bottom-5 sm:w-[36%]">
               <Image src={v.inset.src} alt="" width={v.inset.w} height={v.inset.h} sizes="(min-width: 1024px) 22vw, 40vw" className="block h-auto w-full" />
-              <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-2.5 pt-4 pb-1.5 text-[0.55rem] font-bold tracking-[0.16em] text-white uppercase sm:text-[0.6rem]">
+              <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-2.5 pt-4 pb-1.5 text-[max(0.55rem,9px)] font-bold tracking-[0.16em] text-white uppercase sm:text-[max(0.6rem,9px)]">
                 {v.inset.label}
               </span>
             </span>
@@ -94,13 +94,13 @@ function VentureCard({ v, i, onActive }: { v: Venture; i: number; onActive: (i: 
           <span aria-hidden="true" className="absolute top-3 right-4 font-title text-4xl leading-none text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.6)] sm:text-5xl lg:hidden">
             {v.year}
           </span>
-          <figcaption className="absolute bottom-2.5 left-4 text-[0.55rem] text-white/80 sm:left-5">{v.credit}</figcaption>
+          <figcaption className="absolute bottom-2.5 left-4 text-[max(0.55rem,9px)] text-white/80 sm:left-5">{v.credit}</figcaption>
         </figure>
       </Reveal>
 
       <Reveal y={20} delay={0.08} className="mt-7 grid gap-5 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] md:gap-10">
         <div>
-          <p className="text-[0.62rem] font-bold tracking-[0.3em] text-saffron-deep uppercase">
+          <p className="text-[max(0.62rem,9px)] font-bold tracking-[0.3em] text-saffron-deep uppercase">
             <span className="lg:hidden">
               {v.month ? `${v.month} ` : ""}
               {v.year} ·{" "}
@@ -143,7 +143,7 @@ function YearColumn({ active, go }: { active: number; go: (i: number) => void })
   const v = ventures[active];
   return (
     <div className="sticky top-[18vh]">
-      <p className="text-[0.66rem] font-bold tracking-[0.3em] text-saffron-deep uppercase">
+      <p className="text-[max(0.66rem,9px)] font-bold tracking-[0.3em] text-saffron-deep uppercase">
         {pad(active + 1)} <span className="text-dim">/ {pad(ventures.length)}</span>
       </p>
       <div className="relative mt-4 h-[clamp(6.5rem,10vw,9.5rem)] overflow-hidden">
@@ -245,9 +245,9 @@ export function Ventures() {
                 )}
               >
                 <div className="flex items-center justify-between gap-4">
-                  <p className={cn("text-[0.66rem] font-bold tracking-[0.26em] uppercase", o.current ? "text-[#f2c230]" : "text-saffron-deep")}>{o.when}</p>
+                  <p className={cn("text-[max(0.66rem,9px)] font-bold tracking-[0.26em] uppercase", o.current ? "text-[#f2c230]" : "text-saffron-deep")}>{o.when}</p>
                   {o.current && (
-                    <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[0.6rem] font-bold tracking-[0.2em] text-white uppercase">
+                    <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[max(0.6rem,9px)] font-bold tracking-[0.2em] text-white uppercase">
                       <span className="h-1.5 w-1.5 rounded-full bg-[#46d369]" aria-hidden="true" />
                       Current
                     </span>

@@ -187,7 +187,7 @@ export function MilestoneSheet({ m, onClose }: { m: Milestone; onClose: () => vo
           <div className="px-5 pt-8 pb-10 sm:px-12 sm:pt-10 sm:pb-12">
             <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <span className="tabular-nums tracking-[0.06em] text-sm text-saffron-deep">{dateOf(m)}</span>
-              {m.type && <span className="text-[0.62rem] font-bold tracking-[0.22em] text-mute uppercase">{m.type}</span>}
+              {m.type && <span className="text-[max(0.62rem,9px)] font-bold tracking-[0.22em] text-mute uppercase">{m.type}</span>}
             </p>
             <h2 id={titleId} className="display mt-3 text-4xl leading-[1.05] sm:text-5xl">
               {m.title}
@@ -203,7 +203,7 @@ export function MilestoneSheet({ m, onClose }: { m: Milestone; onClose: () => vo
 
             {featured.length > 0 && (
               <section className="mt-10">
-                <h3 className="text-[0.62rem] font-bold tracking-[0.24em] text-dim uppercase">{featured.length === 1 ? "The film" : `The films · ${featured.length}`}</h3>
+                <h3 className="text-[max(0.62rem,9px)] font-bold tracking-[0.24em] text-dim uppercase">{featured.length === 1 ? "The film" : `The films · ${featured.length}`}</h3>
                 <div className={cn("mt-4 grid gap-4", featured.length > 1 && "md:grid-cols-2")}>
                   {featured.map((f) => (
                     <FeatureFilm key={`${f.title}-${f.year}`} f={f} compact={featured.length > 1} />
@@ -214,7 +214,7 @@ export function MilestoneSheet({ m, onClose }: { m: Milestone; onClose: () => vo
 
             {d.more && (
               <section className="mt-12">
-                <h3 className="flex items-baseline gap-3 text-[0.62rem] font-bold tracking-[0.24em] text-dim uppercase">
+                <h3 className="flex items-baseline gap-3 text-[max(0.62rem,9px)] font-bold tracking-[0.24em] text-dim uppercase">
                   {d.more.label}
                   <span className="text-saffron-deep">{d.more.films.length}</span>
                 </h3>

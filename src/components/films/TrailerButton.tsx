@@ -38,7 +38,7 @@ export function VideoTile({ youtubeId, title, label, image, className }: { youtu
           <PlayIcon className="h-3.5 w-3.5 translate-x-px" />
         </span>
       </div>
-      <p className="mt-3 text-[0.65rem] font-bold tracking-[0.22em] text-gold uppercase">{label}</p>
+      <p className="mt-3 text-[max(0.65rem,9px)] font-bold tracking-[0.22em] text-gold uppercase">{label}</p>
       <p className="mt-1 text-sm text-paper/90">{title}</p>
     </button>
   );

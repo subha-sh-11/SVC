@@ -23,7 +23,7 @@ export function AwardStats({ stats }: { stats: { value: number; label: string }[
           >
             <Counter to={s.value} className={i === 0 ? "display block text-5xl text-gold-gradient" : "display block text-5xl text-paper"} />
             <span className="mt-2 block text-xs text-mute">{s.label}</span>
-            <span className="mt-3 inline-flex items-center gap-1.5 text-[0.62rem] font-bold tracking-[0.16em] text-gold uppercase">
+            <span className="mt-3 inline-flex items-center gap-1.5 text-[max(0.62rem,9px)] font-bold tracking-[0.16em] text-gold uppercase">
               View photos
               <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
                 →

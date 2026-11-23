@@ -47,8 +47,8 @@ function ReleaseTile({ r }: { r: DistributionRecord }) {
             <span className="display text-[16cqw] leading-[1.02] text-ivory">{r.film}</span>
           </div>
         )}
-        {tag && <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-[0.55rem] font-bold tracking-[0.12em] text-white uppercase backdrop-blur-sm">{tag}</span>}
-        {r.filmSlug && <span className="absolute top-2 right-2 rounded-full bg-saffron-deep px-2 py-0.5 text-[0.55rem] font-bold tracking-[0.14em] text-white uppercase">SVC</span>}
+        {tag && <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-[max(0.55rem,9px)] font-bold tracking-[0.12em] text-white uppercase backdrop-blur-sm">{tag}</span>}
+        {r.filmSlug && <span className="absolute top-2 right-2 rounded-full bg-saffron-deep px-2 py-0.5 text-[max(0.55rem,9px)] font-bold tracking-[0.14em] text-white uppercase">SVC</span>}
       </div>
       <p className="mt-3 truncate font-title text-[0.95rem] leading-tight tracking-[0.01em] text-paper uppercase transition-colors group-hover:text-saffron-deep">{r.film}</p>
       <p className="mt-0.5 truncate text-[0.72rem] text-dim" title={r.territory ?? undefined}>

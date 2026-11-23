@@ -109,7 +109,7 @@ export function UpcomingPosters() {
                   >
                     {s.title}
                   </Link>
-                  <span className="mt-[0.2em] text-[0.6rem] leading-[1.35] font-medium tracking-[0.14em] whitespace-nowrap uppercase sm:text-[0.66rem]">
+                  <span className="mt-[0.2em] text-[max(0.6rem,9px)] leading-[1.35] font-medium tracking-[0.14em] whitespace-nowrap uppercase sm:text-[max(0.66rem,9px)]">
                     Coming
                     <br />
                     {s.short}
@@ -139,7 +139,7 @@ export function UpcomingPosters() {
                   <span aria-hidden="true" className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/20" />
                   <span
                     aria-hidden="true"
-                    className="absolute bottom-3 left-3 inline-flex translate-y-2 items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.62rem] font-bold tracking-[0.14em] text-black uppercase opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100"
+                    className="absolute bottom-3 left-3 inline-flex translate-y-2 items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[max(0.62rem,9px)] font-bold tracking-[0.14em] text-black uppercase opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100"
                   >
                     <PlayIcon className="h-3 w-3" />
                     {s.label}

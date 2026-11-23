@@ -118,7 +118,7 @@ export function AwardWall({ photos, title, onClose }: { photos: AwardPhoto[]; ti
                 <span className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20" aria-hidden="true" />
               </button>
               <figcaption className="px-1 pt-2.5">
-                <p className="text-[0.62rem] font-bold tracking-[0.14em] text-gold uppercase">{p.award}</p>
+                <p className="text-[max(0.62rem,9px)] font-bold tracking-[0.14em] text-gold uppercase">{p.award}</p>
                 <p className="mt-1 text-[0.82rem] leading-snug font-medium text-paper">{p.caption}</p>
                 <p className="mt-1 text-xs text-dim">
                   {p.film && <>{p.film} · </>}
@@ -156,7 +156,7 @@ export function AwardWall({ photos, title, onClose }: { photos: AwardPhoto[]; ti
                 <Image src={open.src} alt={open.alt} width={open.w} height={open.h} sizes="(min-width: 1024px) 70vw, 100vw" className="h-full max-h-[62vh] w-full object-contain lg:max-h-[86vh]" />
               </div>
               <figcaption className="flex shrink-0 flex-col gap-3 p-6 lg:w-[340px] lg:p-8">
-                <p className="text-[0.66rem] font-bold tracking-[0.16em] text-gold uppercase">{open.award}</p>
+                <p className="text-[max(0.66rem,9px)] font-bold tracking-[0.16em] text-gold uppercase">{open.award}</p>
                 <p className="text-lg leading-snug font-semibold text-paper">{open.caption}</p>
                 <p className="text-sm text-mute">
                   {open.film && <>{open.film} · </>}

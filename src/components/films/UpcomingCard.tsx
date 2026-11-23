@@ -41,7 +41,7 @@ export function UpcomingCard({ project, large = false, className }: { project: U
         <div className="absolute inset-0 bg-gradient-to-t from-shade/80 via-transparent to-transparent" />
         <span
           className={cn(
-            "absolute top-3 left-3 inline-flex items-center gap-2 rounded-[2px] border bg-shade/70 px-3 py-1 text-[0.6rem] font-bold tracking-[0.2em] text-ivory uppercase backdrop-blur",
+            "absolute top-3 left-3 inline-flex items-center gap-2 rounded-[2px] border bg-shade/70 px-3 py-1 text-[max(0.6rem,9px)] font-bold tracking-[0.2em] text-ivory uppercase backdrop-blur",
             status === "In production" ? "border-gold/60" : quiet ? "border-ivory/20 text-ivory/70" : "border-vermilion/60",
           )}
         >
@@ -52,7 +52,7 @@ export function UpcomingCard({ project, large = false, className }: { project: U
         </span>
       </div>
       <div className="mt-5 flex flex-1 flex-col">
-        <p className="text-[0.65rem] font-bold tracking-[0.22em] text-gold uppercase">{releaseLabel(project.release)}</p>
+        <p className="text-[max(0.65rem,9px)] font-bold tracking-[0.22em] text-gold uppercase">{releaseLabel(project.release)}</p>
         <h3 className={cn("display mt-2", large ? "text-5xl sm:text-6xl" : "text-3xl sm:text-4xl")}>{project.title}</h3>
         {project.altNames.length > 0 && <p className="mt-1 text-xs text-dim">Also referenced as {project.altNames.join(", ")}</p>}
         <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
