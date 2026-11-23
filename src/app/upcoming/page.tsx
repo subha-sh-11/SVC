@@ -47,10 +47,10 @@ function FilmCard({ item, p }: { item: SlateItem; p: UpcomingProject }) {
     <article id={p.slug} className="group flex h-full scroll-mt-24 flex-col overflow-hidden rounded-2xl bg-white shadow-[0_24px_50px_-34px_rgba(59,26,7,0.55)] ring-1 ring-black/[0.06]">
       <div className="relative aspect-video overflow-hidden bg-[#2a1408]">
         {item.poster ? (
-          <Image src={item.poster} alt={`${p.title} poster`} fill sizes="(min-width: 1024px) 44vw, 100vw" className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
+          <Image src={item.poster} alt={`${p.title} poster`} fill sizes="(min-width: 1280px) 400px, (min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
         ) : (
           <div className="absolute inset-0 flex items-end justify-between bg-[linear-gradient(140deg,#f2c230,#e8731a_40%,#9a3c08)] p-8">
-            <span className="font-title text-[clamp(4rem,9vw,7.5rem)] leading-[0.8] text-[#fdf1ce]">{p.title}</span>
+            <span className="font-title text-[clamp(3.5rem,4.6vw,4.8rem)] leading-[0.8] text-[#fdf1ce]">{p.title}</span>
             <span className="mb-1 text-right text-[max(0.64rem,9px)] font-bold tracking-[0.22em] text-[#fdf1ce]/90 uppercase">
               Title
               <br />
@@ -112,7 +112,7 @@ export default function UpcomingPage() {
 
       <div className="theme-light type-classic bg-[#fbf6ee]">
         {/* What's next */}
-        <section className="shell pt-24 pb-10">
+        <section className="shell-narrow pt-24 pb-10">
           <Reveal y={14}>
             <p className="eyebrow flex items-center gap-3">
               Coming soon
@@ -139,8 +139,8 @@ export default function UpcomingPage() {
         </section>
 
         {/* The slate */}
-        <section className="shell pb-24">
-          <div className="grid gap-8 md:grid-cols-2">
+        <section className="shell-narrow pb-24">
+          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
             {slate.map(({ item, p }, i) => (
               <Reveal key={p.slug} delay={(i % 2) * 0.08}>
                 <FilmCard item={item} p={p} />
@@ -151,7 +151,7 @@ export default function UpcomingPage() {
 
         {/* Also announced */}
         {more.length > 0 && (
-          <section className="shell pb-28">
+          <section className="shell-narrow pb-28">
             <Reveal>
               <h2 className="display text-3xl">Also announced</h2>
             </Reveal>

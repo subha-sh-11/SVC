@@ -196,7 +196,7 @@ export function Ventures() {
 
   return (
     <section id="ventures" aria-labelledby="ventures-title" className="relative bg-[#fffaf3] py-24 sm:py-32">
-      <div className="shell">
+      <div className="shell-narrow">
         <Reveal y={14}>
           <p className="eyebrow flex items-center gap-3">
             Started by Dil Raju
@@ -215,7 +215,7 @@ export function Ventures() {
           </Reveal>
         </div>
 
-        <div className="mt-16 lg:mt-24 lg:grid lg:grid-cols-[minmax(0,0.7fr)_minmax(0,2fr)] lg:gap-16 xl:gap-24">
+        <div className="mt-16 lg:mt-24 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16 xl:gap-20">
           <aside className="hidden lg:block" aria-label="Ventures by year">
             <YearColumn active={active} go={go} />
           </aside>

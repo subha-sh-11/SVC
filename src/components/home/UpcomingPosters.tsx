@@ -91,7 +91,7 @@ export function UpcomingPosters() {
       <motion.div
         ref={rowRef}
         // --w: a still's width; --d: how much lower every other one sits (its name fills the space above).
-        className="flex w-max items-start gap-[clamp(14px,1.6vw,26px)] pr-[clamp(14px,1.6vw,26px)] [--d:calc(var(--w)*0.155)] [--w:clamp(270px,36vw,600px)]"
+        className="flex w-max items-start gap-[clamp(14px,1.6vw,26px)] pr-[clamp(14px,1.6vw,26px)] [--d:calc(var(--w)*0.155)] [--w:clamp(270px,26vw,440px)]"
         style={{ x, color: INK }}
       >
         {Array.from({ length: COPIES }, (_, c) =>

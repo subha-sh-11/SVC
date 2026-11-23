@@ -10,14 +10,6 @@ export const metadata: Metadata = {
   description: copy.aboutShort,
 };
 
-/** The banner in numbers (sources as in ventures.ts and the home page's launchpad). */
-const NUMBERS = [
-  { value: "1999", label: "Distribution begins" },
-  { value: "2003", label: "First production, Dil" },
-  { value: "57", label: "Films completed, by Dil Raju's count" },
-  { value: "2", label: "National Film Awards" },
-];
-
 /** The family of banners, by their own marks where they have one. */
 const FAMILY = [
   { name: "Sri Venkateswara Creations", logo: { src: "/brand/svc-deity.png", w: 606, h: 906 }, href: "/films" },
@@ -50,18 +42,6 @@ export default function AboutPage() {
         <Reveal delay={0.1} className="mx-auto w-[min(60vw,260px)] lg:col-span-4 lg:col-start-9 lg:w-full lg:max-w-[300px]">
           <Image src="/brand/svc-deity.png" alt="Lord Venkateswara, the banner's namesake" width={606} height={906} priority className="h-auto w-full" />
         </Reveal>
-      </section>
-
-      {/* In numbers */}
-      <section className="shell">
-        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-paper/10 ring-1 ring-paper/10 lg:grid-cols-4">
-          {NUMBERS.map((x, i) => (
-            <Reveal key={x.label} delay={i * 0.06} className="bg-[#fbf6ee] p-7">
-              <p className="bg-[linear-gradient(180deg,#e8731a,#9a3c08)] bg-clip-text font-title text-5xl leading-none text-transparent">{x.value}</p>
-              <p className="mt-3 text-sm text-mute">{x.label}</p>
-            </Reveal>
-          ))}
-        </div>
       </section>
 
       {/* The people */}

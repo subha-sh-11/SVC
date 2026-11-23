@@ -58,7 +58,7 @@ export default function HomePage() {
       <AwardsShowcase />
 
       {/* Launchpad */}
-      <section className="shell py-28 sm:py-36">
+      <section className="shell-narrow py-28 sm:py-36">
         <SectionHeader
           eyebrow="A launchpad for filmmakers"
           title="First films, first chances."
@@ -69,7 +69,7 @@ export default function HomePage() {
       </section>
 
       {/* Upcoming: on the page itself, stills of the films on the way gliding by */}
-      <section id="upcoming" className="relative overflow-hidden py-24 sm:py-32">
+      <section id="upcoming" className="relative overflow-hidden py-20 sm:py-24">
         <div className="shell flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <Reveal y={14}>
             <p className="eyebrow flex items-center gap-3">
@@ -89,7 +89,7 @@ export default function HomePage() {
           </Reveal>
         </div>
         {/* The stills run edge to edge; the first starts under the heading */}
-        <div className="mt-14 sm:mt-20">
+        <div className="mt-10 sm:mt-14">
           <UpcomingPosters />
         </div>
         <p className="shell mt-10 text-xs text-dim">Drag to scroll · Planned dates are announcements, not confirmed release facts, and may change.</p>

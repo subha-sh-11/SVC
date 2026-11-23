@@ -16,7 +16,7 @@ export default function FilmsPage() {
       <FilmsBackdrop />
       {/* The top of the film: the header reads it as dark */}
       <div data-header-theme="dark" aria-hidden="true" className="absolute inset-x-0 top-0 h-[40svh]" />
-      <section className="shell relative mt-[40svh] pb-10 sm:mt-[46svh]">
+      <section className="shell-narrow relative mt-[40svh] pb-10 sm:mt-[46svh]">
         <FilmsExplorer
           films={films}
           onDark

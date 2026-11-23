@@ -109,6 +109,18 @@
     margin-inline: auto;
     padding-inline: clamp(1rem, 4vw, 3rem);
   }
+  /* A narrower page column with wider side margins, for sections that shouldn't run so wide. */
+  .shell-narrow {
+    width: 100%;
+    max-width: 1360px;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 3rem);
+  }
+  @media (min-width: 1024px) {
+    .shell-narrow {
+      padding-inline: clamp(3rem, 8vw, 5.5rem);
+    }
+  }
   .eyebrow {
     font-family: var(--font-sans);
     font-size: 0.72rem;
