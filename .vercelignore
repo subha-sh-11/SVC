@@ -1,0 +1,10 @@
+# Not needed to build or serve the site.
+/assets
+/scripts
+/SVC
+/.next
+*.tsbuildinfo
+
+# Secrets stay local (the TMDB key lives in .env.local).
+.env*
+!.env.example

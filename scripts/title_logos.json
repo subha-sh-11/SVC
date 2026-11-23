@@ -1,0 +1,274 @@
+{
+  "dil-2003": {
+    "tmdbId": 80996,
+    "tmdbTitle": "దిల్",
+    "language": "te",
+    "width": 3684,
+    "height": 1829,
+    "file": "assets/title_logos/dil-2003.png"
+  },
+  "arya-2004": {
+    "tmdbId": 80880,
+    "tmdbTitle": "ఆర్య",
+    "language": "te",
+    "width": 858,
+    "height": 624,
+    "file": "assets/title_logos/arya-2004.png"
+  },
+  "bhadra-2005": {
+    "tmdbId": 80924,
+    "tmdbTitle": "భద్ర",
+    "language": "te",
+    "width": 2804,
+    "height": 2199,
+    "file": "assets/title_logos/bhadra-2005.png"
+  },
+  "munna-2007": {
+    "tmdbId": 199229,
+    "tmdbTitle": "మున్నా",
+    "language": "te",
+    "width": 2163,
+    "height": 1810,
+    "file": "assets/title_logos/munna-2007.png"
+  },
+  "parugu-2008": {
+    "tmdbId": 23776,
+    "tmdbTitle": "పరుగు",
+    "language": "en",
+    "width": 1273,
+    "height": 397,
+    "file": "assets/title_logos/parugu-2008.png"
+  },
+  "josh-2009": {
+    "tmdbId": 70388,
+    "tmdbTitle": "జోష్",
+    "language": "te",
+    "width": 3011,
+    "height": 3255,
+    "file": "assets/title_logos/josh-2009.png"
+  },
+  "brindavanam-2010": {
+    "tmdbId": 56981,
+    "tmdbTitle": "బృందావనం",
+    "language": "te",
+    "width": 2858,
+    "height": 1383,
+    "file": "assets/title_logos/brindavanam-2010.png"
+  },
+  "gaganam-2011": {
+    "tmdbId": 59900,
+    "tmdbTitle": "గగనం",
+    "language": "te",
+    "width": 3491,
+    "height": 1701,
+    "file": "assets/title_logos/gaganam-2011.png"
+  },
+  "mr-perfect-2011": {
+    "tmdbId": 63376,
+    "tmdbTitle": "Mr. పర్‌ఫెక్ట్",
+    "language": "te",
+    "width": 3992,
+    "height": 1791,
+    "file": "assets/title_logos/mr-perfect-2011.png"
+  },
+  "oh-my-friend-2011": {
+    "tmdbId": 86717,
+    "tmdbTitle": "ఓ మై ఫ్రెండ్",
+    "language": "en",
+    "width": 3228,
+    "height": 2842,
+    "file": "assets/title_logos/oh-my-friend-2011.png"
+  },
+  "seethamma-vakitlo-sirimalle-chettu-2013": {
+    "tmdbId": 193197,
+    "tmdbTitle": "సీతమ్మ వాకిట్లో సిరిమల్లె చెట్టు",
+    "language": "te",
+    "width": 768,
+    "height": 256,
+    "file": "assets/title_logos/seethamma-vakitlo-sirimalle-chettu-2013.png"
+  },
+  "ramayya-vasthavayya-2013": {
+    "tmdbId": 227056,
+    "tmdbTitle": "రామయ్యా వస్తావయ్యా",
+    "language": "te",
+    "width": 750,
+    "height": 251,
+    "file": "assets/title_logos/ramayya-vasthavayya-2013.png"
+  },
+  "yevadu-2014": {
+    "tmdbId": 215248,
+    "tmdbTitle": "ఎవడు",
+    "language": "en",
+    "width": 3785,
+    "height": 1143,
+    "file": "assets/title_logos/yevadu-2014.png"
+  },
+  "kerintha-2015": {
+    "tmdbId": 348659,
+    "tmdbTitle": "కేరింత",
+    "language": "te",
+    "width": 279,
+    "height": 156,
+    "file": "assets/title_logos/kerintha-2015.png"
+  },
+  "subramanyam-for-sale-2015": {
+    "tmdbId": 377668,
+    "tmdbTitle": "సుబ్రహ్మణ్యం ఫర్ సేల్",
+    "language": "te",
+    "width": 349,
+    "height": 154,
+    "file": "assets/title_logos/subramanyam-for-sale-2015.png"
+  },
+  "nenu-local-2017": {
+    "tmdbId": 439057,
+    "tmdbTitle": "నేను లోకల్",
+    "language": "te",
+    "width": 2605,
+    "height": 1317,
+    "file": "assets/title_logos/nenu-local-2017.png"
+  },
+  "dj-duvvada-jagannadham-2017": {
+    "tmdbId": 443635,
+    "tmdbTitle": "డీజే: దువ్వాడ జగన్నాథం",
+    "language": "te",
+    "width": 627,
+    "height": 271,
+    "file": "assets/title_logos/dj-duvvada-jagannadham-2017.png"
+  },
+  "fidaa-2017": {
+    "tmdbId": 467649,
+    "tmdbTitle": "ఫిదా",
+    "language": "te",
+    "width": 1258,
+    "height": 536,
+    "file": "assets/title_logos/fidaa-2017.png"
+  },
+  "raja-the-great-2017": {
+    "tmdbId": 456431,
+    "tmdbTitle": "రాజా ది గ్రేట్",
+    "language": "te",
+    "width": 3817,
+    "height": 2286,
+    "file": "assets/title_logos/raja-the-great-2017.png"
+  },
+  "mca-middle-class-abbayi-2017": {
+    "tmdbId": 485869,
+    "tmdbTitle": "ఎమ్.సీ.ఏ",
+    "language": null,
+    "width": 228,
+    "height": 77,
+    "file": "assets/title_logos/mca-middle-class-abbayi-2017.png"
+  },
+  "hello-guru-prema-kosame-2018": {
+    "tmdbId": 517508,
+    "tmdbTitle": "హలో గురు ప్రేమ కోసమే",
+    "language": "te",
+    "width": 1661,
+    "height": 941,
+    "file": "assets/title_logos/hello-guru-prema-kosame-2018.png"
+  },
+  "f2-fun-and-frustration-2019": {
+    "tmdbId": 566914,
+    "tmdbTitle": "F2 – ఫన్ అండ్ ఫ్రస్టేషన్",
+    "language": null,
+    "width": 526,
+    "height": 464,
+    "file": "assets/title_logos/f2-fun-and-frustration-2019.png"
+  },
+  "maharshi-2019": {
+    "tmdbId": 541487,
+    "tmdbTitle": "మహర్షి",
+    "language": "en",
+    "width": 2152,
+    "height": 1212,
+    "file": "assets/title_logos/maharshi-2019.png"
+  },
+  "v-2020": {
+    "tmdbId": 683342,
+    "tmdbTitle": "V",
+    "language": "en",
+    "width": 237,
+    "height": 313,
+    "file": "assets/title_logos/v-2020.png"
+  },
+  "shaadi-mubarak-2021": {
+    "tmdbId": 802592,
+    "tmdbTitle": "షాదీ ముబారక్",
+    "language": "te",
+    "width": 475,
+    "height": 433,
+    "file": "assets/title_logos/shaadi-mubarak-2021.png"
+  },
+  "vakeel-saab-2021": {
+    "tmdbId": 673732,
+    "tmdbTitle": "వకీల్ సాబ్",
+    "language": "te",
+    "width": 3422,
+    "height": 1148,
+    "file": "assets/title_logos/vakeel-saab-2021.png"
+  },
+  "rowdy-boys-2022": {
+    "tmdbId": 894755,
+    "tmdbTitle": "రౌడీ బాయ్స్",
+    "language": null,
+    "width": 984,
+    "height": 153,
+    "file": "assets/title_logos/rowdy-boys-2022.png"
+  },
+  "f3-fun-and-frustration-2022": {
+    "tmdbId": 802065,
+    "tmdbTitle": "F3: ఫన్ అండ్ ఫ్రస్టేషన్",
+    "language": "te",
+    "width": 2972,
+    "height": 3360,
+    "file": "assets/title_logos/f3-fun-and-frustration-2022.png"
+  },
+  "thank-you-2022": {
+    "tmdbId": 902552,
+    "tmdbTitle": "థ్యాంక్యూ",
+    "language": "te",
+    "width": 672,
+    "height": 305,
+    "file": "assets/title_logos/thank-you-2022.png"
+  },
+  "ori-devuda-2022": {
+    "tmdbId": 896449,
+    "tmdbTitle": "ఓరి దేవుడా..!",
+    "language": "te",
+    "width": 3683,
+    "height": 2206,
+    "file": "assets/title_logos/ori-devuda-2022.png"
+  },
+  "varisu-2023": {
+    "tmdbId": 835017,
+    "tmdbTitle": "வாரிசு",
+    "language": "ta",
+    "width": 2082,
+    "height": 992,
+    "file": "assets/title_logos/varisu-2023.png"
+  },
+  "the-family-star-2024": {
+    "tmdbId": 1141320,
+    "tmdbTitle": "ద ఫ్యామిలీ స్తార్",
+    "language": "en",
+    "width": 2434,
+    "height": 1415,
+    "file": "assets/title_logos/the-family-star-2024.png"
+  },
+  "game-changer-2025": {
+    "tmdbId": 811944,
+    "tmdbTitle": "గేమ్‌ ఛేంజర్‌",
+    "language": "en",
+    "width": 1318,
+    "height": 424,
+    "file": "assets/title_logos/game-changer-2025.png"
+  },
+  "sankranthiki-vasthunam-2025": {
+    "tmdbId": 1380920,
+    "tmdbTitle": "సంక్రాంతికి వస్తున్నాం",
+    "language": "te",
+    "width": 1634,
+    "height": 959,
+    "file": "assets/title_logos/sankranthiki-vasthunam-2025.png"
+  }
+}
