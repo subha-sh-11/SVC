@@ -148,3 +148,45 @@ export function AwardCard({ set, art, priority = false }: { set: AwardSet; art: 
     </article>
   );
 }
+
+/**
+ * Phones: an award as a Pinterest-style pin. The photograph of it being presented (or of the
+ * winner), in one of a few heights so the board staggers; then the film, the award and its year,
+ * and the first of the awards won. The whole pin goes to the film.
+ */
+export function AwardPin({ set, art, ratio }: { set: AwardSet; art: PosterArt; ratio: number }) {
+  const pic = art ?? (set.scope === "personal" || !set.filmSlug ? PERSONAL : null);
+  const selection = set.awards.every((a) => a.outcome === "Selected");
+  const n = set.awards.length;
+  const title = set.film ?? "Dil Raju";
+  const first = set.awards[0];
+  const body = (
+    <>
+      <span className="relative block overflow-hidden rounded-[16px] bg-[#f3ebdf] shadow-[0_10px_24px_-16px_rgba(59,26,7,0.55)]" style={{ aspectRatio: `1 / ${ratio}` }}>
+        {pic ? (
+          // eslint-disable-next-line @next/next/no-img-element -- pre-sized card image
+          <img src={pic.src} alt="" loading="lazy" decoding="async" style={{ objectPosition: pic.focus ?? "50% 30%" }} className="absolute inset-0 h-full w-full object-cover" />
+        ) : (
+          <span className="absolute inset-0 flex flex-col items-center justify-center bg-[linear-gradient(160deg,#fbf3e6,#f1e1c8)] px-3 text-center">
+            <span className="font-display text-[1rem] leading-tight text-[#3b1a07] italic">{set.label}</span>
+            {set.year && <span className="mt-1.5 font-title text-[1.8rem] leading-none text-transparent [-webkit-text-stroke:1px_#c4520c]">{set.year}</span>}
+          </span>
+        )}
+        {pic?.clip && <CardClip src={pic.clip} focus={pic.focus} />}
+        <span className="absolute top-2.5 left-2.5 rounded-full bg-white/90 px-2.5 py-1 text-[max(0.56rem,9px)] font-bold tracking-[0.12em] text-[#1a0f08] uppercase backdrop-blur-sm">
+          {selection ? "Selection" : `${n} ${n === 1 ? "win" : "wins"}`}
+        </span>
+      </span>
+      <span className="mt-2 block px-0.5 font-title text-[1.02rem] leading-[1] tracking-[0.01em] text-[#1a0f08] uppercase">{title}</span>
+      <span className="mt-1 block px-0.5 text-[0.66rem] text-[#8a6a52]">{[set.label, set.year].filter(Boolean).join(" · ")}</span>
+      {first && <span className="mt-1 line-clamp-2 block px-0.5 text-[0.72rem] leading-snug text-[#3b1a07]">{first.category}</span>}
+    </>
+  );
+  return set.filmSlug ? (
+    <Link href={`/films/${set.filmSlug}`} className="block" aria-label={`${title}: ${set.label}${set.year ? `, ${set.year}` : ""}`}>
+      {body}
+    </Link>
+  ) : (
+    <div>{body}</div>
+  );
+}

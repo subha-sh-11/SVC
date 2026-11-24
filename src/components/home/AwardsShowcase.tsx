@@ -11,6 +11,8 @@ import { awardPhotos } from "@/data/awardPhotos";
 const EASE = [0.22, 1, 0.36, 1] as const;
 /** How long each award stays before the next comes in. */
 const STAY_MS = 7000;
+/** Phones: each award card's turn before the next slides in. */
+const PHONE_STAY_MS = 3000;
 
 const photo = (src: string) => awardPhotos.find((p) => p.src === src)!;
 
@@ -58,6 +60,76 @@ const SHOWCASE = [
 ];
 
 /**
+ * Phones: each award as a card to swipe through: the photograph of it being presented, its medal,
+ * the film and the honour, and the way to the film. A dot per award; one link to all of them.
+ */
+function PhoneAwards() {
+  const listRef = useRef<HTMLUListElement>(null);
+  const [active, setActive] = useState(0);
+  const onScreen = useInView(listRef, { amount: 0.5 });
+  // After a swipe, it waits a little before moving on by itself again.
+  const heldUntil = useRef(0);
+  const hold = () => (heldUntil.current = Date.now() + 6000);
+  useEffect(() => {
+    if (!onScreen) return;
+    const t = window.setInterval(() => {
+      const el = listRef.current;
+      const first = el?.firstElementChild as HTMLElement | null;
+      if (!el || !first || Date.now() < heldUntil.current) return;
+      const step = first.offsetWidth + 12;
+      const next = (Math.round(el.scrollLeft / step) + 1) % SHOWCASE.length;
+      el.scrollTo({ left: next * step, behavior: "smooth" });
+    }, PHONE_STAY_MS);
+    return () => window.clearInterval(t);
+  }, [onScreen]);
+  const onScroll = () => {
+    const el = listRef.current;
+    const first = el?.firstElementChild as HTMLElement | null;
+    if (!el || !first) return;
+    setActive(Math.min(SHOWCASE.length - 1, Math.round(el.scrollLeft / (first.offsetWidth + 12))));
+  };
+  return (
+    <div className="mt-8 sm:hidden">
+      <ul ref={listRef} onScroll={onScroll} onPointerDown={hold} onTouchStart={hold} className="no-scrollbar -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2">
+        {SHOWCASE.map((s) => (
+          <li key={s.key} className="w-[84vw] max-w-[360px] shrink-0 snap-start">
+            <article className="h-full overflow-hidden rounded-[20px] bg-white shadow-[0_22px_44px_-28px_rgba(59,26,7,0.55)] ring-1 ring-black/[0.05]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#2a1408]">
+                <Image src={s.photo.src} alt={s.photo.alt} fill sizes="84vw" className="object-cover" />
+                <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent" />
+                <span className="absolute inset-x-4 bottom-3.5">
+                  <span className="block text-[max(0.58rem,9px)] font-bold tracking-[0.2em] text-white/80 uppercase">{s.edition}</span>
+                  <span className="mt-1 block font-display text-[1.6rem] leading-tight text-white">{s.film}</span>
+                </span>
+              </div>
+              <div className="p-4 pb-5">
+                <p className="text-[0.88rem] leading-snug font-medium text-paper">{s.category}</p>
+                <p className="mt-1 text-[0.74rem] text-dim">
+                  {s.banner} · {s.detail.split(" · ")[0]}
+                </p>
+                <Link href={`/films/${s.slug}`} className="mt-3.5 inline-flex items-center gap-1.5 text-[max(0.62rem,9px)] font-bold tracking-[0.18em] text-saffron-deep uppercase">
+                  About the film <span aria-hidden="true">&rarr;</span>
+                </Link>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+      <div className="mt-4 flex justify-center gap-2" aria-hidden="true">
+        {SHOWCASE.map((s, i) => (
+          <span key={s.key} className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? "w-6 bg-saffron-deep" : "w-1.5 bg-paper/20"}`} />
+        ))}
+      </div>
+      <div className="mt-7 text-center">
+        <Link href="/awards" className="inline-flex items-center gap-2 py-1.5 text-[0.7rem] font-bold tracking-[0.24em] text-paper uppercase">
+          All recognition <span aria-hidden="true">&rarr;</span>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/**
  * The home page's awards: the photograph of each award being presented, with its story beside it.
  * They come in one after another on their own. The whole photograph is always shown, over a soft
  * blur of itself where its shape differs from the frame.
@@ -75,21 +147,23 @@ export function AwardsShowcase() {
   }, [active, inView]);
 
   return (
-    <section ref={ref} id="awards" aria-roledescription="carousel" aria-label="National Film Awards" className="relative overflow-hidden border-y border-gold/15 bg-ink-900 py-24 sm:py-32">
+    <section ref={ref} id="awards" aria-roledescription="carousel" aria-label="National Film Awards" className="relative overflow-hidden border-y border-gold/15 bg-ink-900 py-14 max-md:border-t-0 sm:py-32">
       <div className="pointer-events-none absolute top-1/2 -right-40 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-gold/5 blur-[140px]" />
       <div className="shell relative">
-        <Reveal y={12}>
+        <Reveal y={12} className="max-sm:hidden">
           <p className="eyebrow flex items-center gap-3">
             National recognition
           </p>
         </Reveal>
         <Reveal y={20} delay={0.05}>
-          <h2 className="display mt-5 block text-4xl sm:text-5xl">
+          <h2 className="display mt-5 block text-4xl max-sm:mt-0 max-sm:text-[1.75rem] max-sm:whitespace-nowrap sm:text-5xl">
             Honoured by the <span className="italic text-gold-gradient">nation.</span>
           </h2>
         </Reveal>
 
-        <div className="mt-12 grid items-center gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-14">
+        <PhoneAwards />
+
+        <div className="mt-12 grid items-center gap-10 max-sm:hidden lg:mt-16 lg:grid-cols-12 lg:gap-14">
           {/* The photograph */}
           <div className="lg:col-span-7">
             <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-[#2a1408] shadow-[0_30px_60px_-30px_rgba(59,26,7,0.5)] ring-1 ring-black/[0.06]">

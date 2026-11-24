@@ -24,10 +24,20 @@ export default function AwardsPage() {
     // Headings in the Playfair serif (type-classic), text in the sans, by importance.
     <div className="theme-light type-classic" data-header-theme="light">
       {/* Dil Raju receiving the Swarna Kamal plays across the top; the National Awards on stage rise over it */}
-      <AwardsHero photos={stage} />
+      <div className="max-sm:hidden">
+        <AwardsHero photos={stage} />
+      </div>
+
+      {/* Phones: a clean top, then the board of awards */}
+      <section className="shell pt-7 pb-1 sm:hidden">
+        <h1 className="font-display text-[2.2rem] leading-none text-[#2a1408]">Awards</h1>
+        <p className="mt-2 text-[0.8rem] text-[#8a6a52]">
+          {awards.length} records · {wins} wins · {films} films recognised
+        </p>
+      </section>
 
       {/* The register's numbers: each opens the wall of award photographs. */}
-      <section className="shell grid items-end gap-12 py-28 lg:grid-cols-12">
+      <section className="shell grid items-end gap-12 py-28 max-sm:hidden lg:grid-cols-12">
         <div className="lg:col-span-6">
           <Reveal y={12}>
             <p className="eyebrow flex items-center gap-3">
@@ -56,9 +66,9 @@ export default function AwardsPage() {
         </div>
       </section>
 
-      <section className="shell pb-10">
+      <section className="shell pb-10 max-sm:pt-5">
         <AwardsExplorer awards={awards} />
-        <p className="mt-16 max-w-3xl text-xs leading-relaxed text-dim">
+        <p className="mt-16 max-w-3xl text-xs leading-relaxed text-dim max-sm:mt-10">
           A source-limited register, not an exhaustive census of every nomination or honour. Dil Raju Productions and personal honours are labelled separately from Sri Venkateswara Creations recognition. Photographs are credited where shown.
         </p>
       </section>

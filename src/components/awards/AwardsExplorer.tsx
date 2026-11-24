@@ -8,7 +8,8 @@ import { awardClips } from "@/data/awardClips";
 import { awardPeople } from "@/data/awardPeople";
 import { cn } from "@/lib/utils";
 import { type AwardSet, type PosterArt } from "./AwardPoster";
-import { AwardCard } from "./AwardCard";
+import { AwardCard, AwardPin } from "./AwardCard";
+import { PIN_SHAPES, PinBoard, twoColumns } from "@/components/ui/Pins";
 
 const GROUP_ORDER = ["National Film Awards", "IFFI Indian Panorama", "Nandi Awards", "Filmfare Awards South", "Gaddar Film Awards", "SIIMA", "Other Honours"];
 type Scope = "all" | "svc" | "related" | "personal";
@@ -122,9 +123,22 @@ function assignArt(sets: AwardSet[]) {
   return art;
 }
 
+const PHONE_LIMIT = 12;
+
+/** Phones: the awards as a Pinterest-style board of pins (the first few, then all on request). */
+function PhoneAwardBoard({ sets, art, all }: { sets: AwardSet[]; art: Map<string, PosterArt>; all: boolean }) {
+  const shown = all ? sets : sets.slice(0, PHONE_LIMIT);
+  const [left, right] = twoColumns(shown, (_, i) => PIN_SHAPES[i % PIN_SHAPES.length] + 0.45);
+  const pin = (set: AwardSet) => <AwardPin key={set.key} set={set} art={art.get(set.key) ?? null} ratio={PIN_SHAPES[shown.indexOf(set) % PIN_SHAPES.length]} />;
+  return <PinBoard className="mt-6 sm:hidden" left={left.map(pin)} right={right.map(pin)} />;
+}
+
+
 export function AwardsExplorer({ awards }: { awards: Award[] }) {
   const [group, setGroup] = useState<string>("all");
   const [scope, setScope] = useState<Scope>("all");
+  // Phones show the first few records and the rest on request.
+  const [all, setAll] = useState(false);
 
   const groups = useMemo(() => {
     const counts = new Map<string, number>();
@@ -148,7 +162,7 @@ export function AwardsExplorer({ awards }: { awards: Award[] }) {
     <div style={{ color: INK }}>
       {/* The award bodies: plain words, the one chosen underlined */}
       <LayoutGroup id="award-groups">
-        <div className="no-scrollbar -mx-4 flex gap-7 overflow-x-auto border-b border-[#1a0f08]/12 px-4 sm:mx-0 sm:gap-9 sm:px-0" role="tablist" aria-label="Award body">
+        <div className="no-scrollbar -mx-4 flex gap-7 overflow-x-auto border-b border-[#1a0f08]/12 px-4 max-sm:gap-6 sm:mx-0 sm:gap-9 sm:px-0" role="tablist" aria-label="Award body">
           {[{ key: "all", count: awards.length }, ...groups].map((g) => {
             const on = group === g.key;
             return (
@@ -157,7 +171,7 @@ export function AwardsExplorer({ awards }: { awards: Award[] }) {
                 role="tab"
                 aria-selected={on}
                 onClick={() => setGroup(g.key)}
-                className={cn("relative shrink-0 pt-1 pb-3.5 text-[0.95rem] whitespace-nowrap transition-colors", on ? "font-semibold" : "text-[#8a6a52] hover:text-[#1a0f08]")}
+                className={cn("relative shrink-0 pt-1 pb-3.5 text-[0.95rem] whitespace-nowrap transition-colors max-sm:pb-2.5 max-sm:text-[0.84rem]", on ? "font-semibold" : "text-[#8a6a52] hover:text-[#1a0f08] max-sm:font-semibold")}
               >
                 {TAB_NAMES[g.key] ?? g.key}
                 {on && <motion.span layoutId="award-tab" className="absolute inset-x-0 -bottom-px h-[2px] bg-saffron-deep" transition={{ type: "spring", stiffness: 420, damping: 38 }} />}
@@ -168,7 +182,7 @@ export function AwardsExplorer({ awards }: { awards: Award[] }) {
       </LayoutGroup>
 
       {/* Whose: the banner, its sister banner, or Dil Raju himself */}
-      <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[0.82rem]">
+      <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[0.82rem] max-sm:mt-4 max-sm:gap-x-4 max-sm:text-[0.76rem]">
         {SCOPES.map((s) => {
           const on = scope === s.key;
           return (
@@ -192,18 +206,32 @@ export function AwardsExplorer({ awards }: { awards: Award[] }) {
       {sets.length === 0 ? (
         <p className="py-24 text-center text-[#8a6a52]">Nothing recorded for this choice.</p>
       ) : (
-        <ul key={`${group}|${scope}`} className="mt-12 grid items-start gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-          {sets.map((set, i) => (
-            <motion.li
-              key={set.key}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: Math.min(i, 9) * 0.05, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <AwardCard set={set} art={art.get(set.key) ?? null} priority={i < 3} />
-            </motion.li>
-          ))}
-        </ul>
+        <>
+          <PhoneAwardBoard sets={sets} art={art} all={all} />
+          <ul key={`${group}|${scope}`} className="mt-10 grid items-start gap-x-8 gap-y-12 max-sm:hidden sm:mt-12 sm:grid-cols-2 sm:gap-y-16 lg:grid-cols-3">
+            {sets.map((set, i) => (
+              <motion.li
+                key={set.key}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: Math.min(i, 9) * 0.05, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <AwardCard set={set} art={art.get(set.key) ?? null} priority={i < 3} />
+              </motion.li>
+            ))}
+          </ul>
+          {!all && sets.length > PHONE_LIMIT && (
+            <div className="mt-12 flex justify-center sm:hidden">
+              <button
+                type="button"
+                onClick={() => setAll(true)}
+                className="rounded-full bg-[#f3ece3] px-6 py-3 text-[0.72rem] font-semibold text-[#1a0f08] transition-colors active:bg-[#e8dccd]"
+              >
+                More awards
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -58,7 +58,7 @@ export default async function FilmPage({ params }: Props) {
               The story
             </p>
           </Reveal>
-          {film.premise && <SplitWords as="p" text={film.premise} stagger={0.025} className="display mt-6 block text-3xl leading-[1.2] sm:text-4xl" />}
+          {film.premise && <SplitWords as="p" text={film.premise} stagger={0.025} className="display mt-6 block text-[1.6rem] leading-[1.25] sm:text-4xl" />}
 
           <Reveal delay={0.15} className="mt-16">
             <dl className="divide-y divide-gold/15 border-y border-gold/15">

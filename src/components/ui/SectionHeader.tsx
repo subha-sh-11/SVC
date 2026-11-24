@@ -11,6 +11,7 @@ export function SectionHeader({
   link,
   className,
   align = "split",
+  descriptionOnPhones = true,
 }: {
   eyebrow: string;
   title: string;
@@ -19,6 +20,8 @@ export function SectionHeader({
   link?: { href: string; label: string };
   className?: string;
   align?: "split" | "stack";
+  /** false: the description is left out on phones. */
+  descriptionOnPhones?: boolean;
 }) {
   return (
     <div className={cn("flex flex-col gap-8", align === "split" && "lg:flex-row lg:items-end lg:justify-between", className)}>
@@ -31,8 +34,8 @@ export function SectionHeader({
         <SplitWords as="h2" text={title} italicWords={italic} className="display mt-5 block text-4xl sm:text-5xl lg:text-6xl" />
       </div>
       {(description || link) && (
-        <Reveal delay={0.2} className="flex max-w-md flex-col gap-6 lg:items-end lg:text-right">
-          {description && <p className="text-[0.95rem] leading-relaxed text-mute">{description}</p>}
+        <Reveal delay={0.2} className={cn("flex max-w-md flex-col gap-6 lg:items-end lg:text-right", !descriptionOnPhones && !link && "max-sm:hidden")}>
+          {description && <p className={cn("text-[0.95rem] leading-relaxed text-mute", !descriptionOnPhones && "max-sm:hidden")}>{description}</p>}
           {link && (
             <Link href={link.href} className="group inline-flex items-center gap-3 text-xs font-bold tracking-[0.22em] text-paper uppercase">
               <span className="link-underline pb-1">{link.label}</span>

@@ -1,0 +1,43 @@
+/**
+ * Height per unit of width of the milestone pictures (journeyImages.ts and the milestones' own
+ * images), measured from the files in public/. Phones size their pins to these, so the pictures
+ * show whole. Regenerate if a picture changes.
+ */
+export const imageRatios: Record<string, number> = {
+  "/images/arya__HkmX7CGbYEU.jpg": 0.562,
+  "/images/awards/nfa67-maharshi-swarna-kamal.jpg": 0.451,
+  "/images/balagam__8R3Vcy5CaPc.jpg": 0.562,
+  "/images/bhadra_prime_video_artwork.jpg": 0.563,
+  "/images/bommarillu__8A5I76C_638.jpg": 0.562,
+  "/images/dil_sunnxt_landscape.jpg": 0.562,
+  "/images/dreams_gallery_01.jpg": 0.562,
+  "/images/dreams_gallery_05.jpg": 0.562,
+  "/images/f2__XttQbFKkeHQ.jpg": 0.562,
+  "/images/fidaa__AVtvjfoXNXc.jpg": 0.562,
+  "/images/frames/f2-fun-and-frustration-2019.jpg": 0.419,
+  "/images/frames/fidaa-2017.jpg": 0.426,
+  "/images/frames/game-changer-2025.jpg": 0.419,
+  "/images/frames/rowdy-janardhana.jpg": 0.369,
+  "/images/frames/sankranthiki-vasthunam-2025.jpg": 0.419,
+  "/images/game_changer__zHiKFSBO_JE.jpg": 0.562,
+  "/images/journey/arya.jpg": 0.577,
+  "/images/journey/balagam.jpg": 0.42,
+  "/images/journey/bommarillu.jpg": 0.425,
+  "/images/journey/jersey.jpg": 0.417,
+  "/images/journey/munna.jpg": 0.426,
+  "/images/journey/oke-okkadu-song.jpg": 0.464,
+  "/images/journey/pelli-pandiri-1997.jpg": 0.405,
+  "/images/journey/v.jpg": 0.459,
+  "/images/journey/varisu.jpg": 0.42,
+  "/images/maharshi__ByjXIbg4hjw.jpg": 0.562,
+  "/images/munna__h1fOJVrBapg.jpg": 0.562,
+  "/images/rowdy_janardhana__Q1s_CWfGAHk.jpg": 0.562,
+  "/images/sankranthiki_vasthunam__yCkl2Z3PBs0.jpg": 0.562,
+  "/images/seethamma_vakitlo_sirimalle_chettu__8-fsOSq-_Mw.jpg": 0.56,
+  "/images/shatamanam_national_award_2017_godl.jpg": 0.62,
+  "/images/upcoming-posters/markandeya.jpg": 0.562,
+  "/images/v__eBcYKDUT8fs.jpg": 0.562,
+  "/images/varisu__9fux9swQ5AQ.jpg": 0.562,
+  "/images/ventures/dil-raju-dreams-launch.jpg": 0.562,
+  "/images/ventures/lorven-launch.jpg": 0.562,
+};

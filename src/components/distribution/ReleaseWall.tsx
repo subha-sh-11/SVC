@@ -8,6 +8,7 @@ import type { DistributionRecord } from "@/data/types";
 import { releasePoster } from "@/data/releasePoster";
 import { territoryShort } from "@/lib/territory";
 import { cn } from "@/lib/utils";
+import { PinBoard, twoColumns } from "@/components/ui/Pins";
 
 function territoryGroup(t: string | null) {
   const s = (t ?? "").toLowerCase();
@@ -25,12 +26,12 @@ function statusTag(s: string | null) {
 }
 
 /** A release, as its poster, with the film and territory beneath. SVC's own films open their page. */
-function ReleaseTile({ r }: { r: DistributionRecord }) {
+function ReleaseTile({ r, className, as: Tag = "li" }: { r: DistributionRecord; className?: string; as?: "li" | "div" }) {
   const poster = releasePoster(r);
   const tag = statusTag(r.status);
   const inner = (
     <>
-      <div className="relative aspect-[2/3] overflow-hidden rounded-[6px] bg-[#1c0d05] shadow-[0_14px_26px_-18px_rgba(59,26,7,0.65)] ring-1 ring-black/[0.06] transition-[translate,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5 group-hover:shadow-[0_24px_36px_-20px_rgba(59,26,7,0.75)]">
+      <div className="relative aspect-[2/3] overflow-hidden rounded-[6px] bg-[#1c0d05] max-sm:rounded-[16px] shadow-[0_14px_26px_-18px_rgba(59,26,7,0.65)] ring-1 ring-black/[0.06] transition-[translate,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5 group-hover:shadow-[0_24px_36px_-20px_rgba(59,26,7,0.75)]">
         {poster ? (
           <Image
             src={poster.src}
@@ -57,7 +58,7 @@ function ReleaseTile({ r }: { r: DistributionRecord }) {
     </>
   );
   return (
-    <li>
+    <Tag className={className}>
       {r.filmSlug ? (
         <Link href={`/films/${r.filmSlug}`} aria-label={`${r.film} (${r.year}), an SVC film`} className="group block">
           {inner}
@@ -65,16 +66,20 @@ function ReleaseTile({ r }: { r: DistributionRecord }) {
       ) : (
         <div className="group">{inner}</div>
       )}
-    </li>
+    </Tag>
   );
 }
 
 /**
  * Every recorded release as a wall of posters, newest first. Filter by territory, or search by film.
  */
+const PHONE_LIMIT = 18;
+
 export function ReleaseWall({ records }: { records: DistributionRecord[] }) {
   const [filter, setFilter] = useState("All");
   const [q, setQ] = useState("");
+  // Phones show the newest releases first and the rest on request (a search always shows every match).
+  const [all, setAll] = useState(false);
 
   const base = useMemo(() => {
     const term = q.trim().toLowerCase();
@@ -83,11 +88,41 @@ export function ReleaseWall({ records }: { records: DistributionRecord[] }) {
 
   const shown = useMemo(() => [...base].sort((a, b) => b.year - a.year), [base]);
   const total = shown.length;
+  const clip = !all && !q.trim() && total > PHONE_LIMIT;
+  // Phones: the releases as a two-column board of posters.
+  const [phoneLeft, phoneRight] = twoColumns(clip ? shown.slice(0, PHONE_LIMIT) : shown, () => 1.8);
+  const phoneTile = (x: DistributionRecord) => <ReleaseTile key={`${x.film}-${x.year}`} r={x} as="div" />;
 
   return (
     <div>
+      {/* Phones: a search bar, then the territories as plain tabs */}
+      <div className="sm:hidden">
+        <label className="flex items-center gap-2.5 rounded-full bg-[#f3ece3] px-4 py-2.5">
+          <span className="sr-only">Search a film</span>
+          <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0 text-[#8a6a52]" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+            <circle cx="9" cy="9" r="6" />
+            <path d="m14 14 4 4" strokeLinecap="round" />
+          </svg>
+          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search a film" className="w-full bg-transparent text-[0.88rem] text-[#2a1408] outline-none placeholder:text-[#9a7558]" />
+        </label>
+        <div className="no-scrollbar -mx-4 mt-4 flex gap-6 overflow-x-auto border-b border-[#2a1408]/10 px-4">
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFilter(f)}
+              aria-pressed={filter === f}
+              className={cn("relative shrink-0 pb-2.5 text-[0.84rem] font-semibold transition-colors", filter === f ? "text-[#2a1408]" : "text-[#9a7558]")}
+            >
+              {f}
+              {filter === f && <span aria-hidden="true" className="absolute inset-x-0 -bottom-px h-[2px] bg-saffron-deep" />}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Filters */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 max-sm:hidden md:flex-row md:items-center md:justify-between">
         <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 md:mx-0 md:px-0">
           {FILTERS.map((f) => (
             <button
@@ -118,17 +153,31 @@ export function ReleaseWall({ records }: { records: DistributionRecord[] }) {
       {total === 0 ? (
         <p className="py-24 text-center text-mute">No films match.</p>
       ) : (
+        <>
+        <PinBoard className="mt-6 sm:hidden" left={phoneLeft.map(phoneTile)} right={phoneRight.map(phoneTile)} />
         <motion.ul
           key={`${filter}|${q}`}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 grid grid-cols-3 gap-x-3 gap-y-8 sm:grid-cols-4 sm:gap-x-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10"
+          className="mt-8 grid grid-cols-3 gap-x-3 gap-y-8 max-sm:hidden sm:grid-cols-4 sm:gap-x-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10"
         >
-          {shown.map((r) => (
-            <ReleaseTile key={`${r.film}-${r.year}`} r={r} />
+          {shown.map((r, i) => (
+            <ReleaseTile key={`${r.film}-${r.year}`} r={r}  />
           ))}
         </motion.ul>
+        </>
+      )}
+      {clip && (
+        <div className="mt-10 flex justify-center sm:hidden">
+          <button
+            type="button"
+            onClick={() => setAll(true)}
+            className="rounded-full bg-[#f3ece3] px-6 py-3 text-[0.72rem] font-semibold text-[#2a1408] transition-colors active:bg-[#e8dccd]"
+          >
+            More releases
+          </button>
+        </div>
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { JourneyIntro } from "@/components/journey/JourneyIntro";
 import { Timeline } from "@/components/journey/Timeline";
 import { Reveal, SplitWords } from "@/components/ui/motion";
@@ -25,6 +26,12 @@ export default function ProductionPage() {
   return (
     // White, with Playfair headings (type-classic) and the films' own pictures.
     <div className="theme-light type-classic" data-header-theme="light">
+      {/* Phones: a clean top, then the milestones as a board */}
+      <section className="shell pt-7 pb-6 sm:hidden">
+        <h1 className="font-display text-[2.2rem] leading-none text-[#2a1408]">Production</h1>
+        <p className="mt-2 text-[0.8rem] leading-relaxed text-[#8a6a52]">Telling Telugu stories since 2003, from Dil to the films on the way. Tap a moment for its story.</p>
+      </section>
+      <div className="max-sm:hidden">
       <JourneyIntro
         title={
           <>
@@ -34,13 +41,19 @@ export default function ProductionPage() {
         text="In April 2003 Sri Venkateswara Creations released its first production, Dil, and the film's success became part of Dil Raju's name. Since then the banner has given directors their first films, made family dramas that became household names, won two National Film Awards and moved into Tamil with Varisu."
         posters={[...official].reverse().map((t) => ({ src: t.sm, position: t.position }))}
       />
+      </div>
 
-      <div className="mt-8">
+      <div className="mt-8 max-sm:mt-0">
         <Timeline items={PRODUCTION} label="Production milestones" heading={{ eyebrow: "2003 to 2026", title: "Film by film" }} />
       </div>
 
       {/* Twenty years: the posters of the films that followed, behind the line. */}
-      <section data-header-theme="dark" className="relative mt-24 overflow-hidden bg-[#1c0d05]">
+      {/* Phones: the ways on, plainly */}
+      <nav aria-label="Next" className="shell mt-12 flex flex-col items-start gap-4 sm:hidden">
+        <Link href="/films" className="inline-flex items-center gap-2 text-[0.7rem] font-bold tracking-[0.22em] text-[#2a1408] uppercase">View the films <span aria-hidden="true">&rarr;</span></Link>
+        <Link href="/distribution" className="inline-flex items-center gap-2 text-[0.7rem] font-bold tracking-[0.22em] text-[#2a1408] uppercase">The distribution journey <span aria-hidden="true">&rarr;</span></Link>
+      </nav>
+      <section data-header-theme="dark" className="relative mt-24 overflow-hidden bg-[#1c0d05] max-sm:hidden">
         <div aria-hidden="true" className="grid grid-cols-6 gap-1.5 p-1.5 opacity-70 sm:grid-cols-9 lg:grid-cols-12">
           {wall.map((t) => (
             <div key={t.slug} className="relative aspect-[2/3] overflow-hidden rounded-[3px]">

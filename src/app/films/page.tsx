@@ -13,10 +13,12 @@ export default function FilmsPage() {
     // White, with Seethamma Vakitlo Sirimalle Chettu playing across the top and glowing into it;
     // the title and its tabs sit over the film, and the posters rise up into it.
     <div className="theme-light relative isolate flow-root bg-white" data-header-theme="light">
-      <FilmsBackdrop />
+      <div className="max-sm:hidden">
+        <FilmsBackdrop />
+      </div>
       {/* The top of the film: the header reads it as dark */}
-      <div data-header-theme="dark" aria-hidden="true" className="absolute inset-x-0 top-0 h-[40svh]" />
-      <section className="shell-narrow relative mt-[40svh] pb-10 sm:mt-[46svh]">
+      <div data-header-theme="dark" aria-hidden="true" className="absolute inset-x-0 top-0 h-[40svh] max-sm:hidden" />
+      <section className="shell-narrow relative mt-[40svh] pb-10 max-sm:mt-0 max-sm:pt-7 sm:mt-[46svh]">
         <FilmsExplorer
           films={films}
           onDark

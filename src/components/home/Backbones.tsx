@@ -101,6 +101,51 @@ function Caption({ m, className }: { m: Profile; className?: string }) {
   );
 }
 
+/** Phones: a person's films by decade, each a row of posters to swipe through. */
+function FilmRows({ films, onClose }: { films: Profile["films"]; onClose: () => void }) {
+  const groups = new Map<string, Profile["films"]>();
+  for (const f of films) {
+    const k = f.year ? `${Math.floor(f.year / 10) * 10}s` : "Other";
+    groups.set(k, [...(groups.get(k) ?? []), f]);
+  }
+  return (
+    <div className="mt-5 space-y-8 sm:hidden">
+      {[...groups].map(([k, list]) => {
+        const years = list.map((f) => f.year).filter((y): y is number => Boolean(y));
+        const a = years.length ? Math.min(...years) : null;
+        const b = years.length ? Math.max(...years) : null;
+        return (
+          <section key={k} aria-label={`Films, ${k}`}>
+            <p className="flex items-baseline justify-between gap-3">
+              <span className="font-display text-[1.35rem] text-[#2a1408]">{k}</span>
+              <span className="text-[0.72rem] text-[#9a7558]">
+                {a && (a === b ? a : `${a}–${b}`)} · {list.length} {list.length === 1 ? "film" : "films"}
+              </span>
+            </p>
+            <ul className="no-scrollbar -mx-6 mt-3 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-1">
+              {list.map((f) => (
+                <li key={f.slug} className="w-[29vw] max-w-[132px] shrink-0 snap-start">
+                  <Link href={`/films/${f.slug}`} onClick={onClose} className="block">
+                    <span className="relative block aspect-[2/3] overflow-hidden rounded-[8px] bg-[#f1e4cf] shadow-[0_10px_22px_-14px_rgba(59,26,7,0.55)]">
+                      {f.poster ? (
+                        <Image src={f.poster} alt="" fill sizes="30vw" className="object-cover" />
+                      ) : (
+                        <span className="absolute inset-0 grid place-items-center p-2 text-center font-display text-sm text-[#6f4b2f]">{f.title}</span>
+                      )}
+                    </span>
+                    <span className="mt-1.5 block truncate text-[0.74rem] font-semibold text-[#2a1408]">{f.title}</span>
+                    {f.year && <span className="block text-[max(0.62rem,9px)] text-[#9a7558]">{f.year}</span>}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
 /** A person's profile: their portrait and story, and the films they produced. */
 function ProfileSheet({ m, onClose }: { m: Profile; onClose: () => void }) {
   const lenis = useLenis();
@@ -132,41 +177,49 @@ function ProfileSheet({ m, onClose }: { m: Profile; onClose: () => void }) {
       onClick={onClose}
     >
       <div className="fixed inset-0 bg-[#2a1408]/55 backdrop-blur-[2px]" aria-hidden="true" />
-      <div className="relative flex min-h-full items-start justify-center px-3 py-[5vh] sm:px-6">
+      <div className="relative flex min-h-full items-start justify-center sm:px-6 sm:py-[5vh]">
         <motion.article
           role="dialog"
           aria-modal="true"
           aria-label={`${m.name}, ${m.role}`}
-          className="relative w-full max-w-5xl overflow-hidden rounded-[22px] bg-[#fffaf3] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.6)]"
+          className="relative w-full max-w-5xl overflow-hidden bg-[#fffaf3] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.6)] max-sm:min-h-[100svh] max-sm:overflow-visible sm:rounded-[22px]"
           initial={{ opacity: 0, y: 40, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 24, scale: 0.98 }}
           transition={{ duration: 0.55, ease: EASE }}
           onClick={(e) => e.stopPropagation()}
         >
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="absolute top-4 right-4 z-10 grid h-11 w-11 place-items-center rounded-full bg-white/90 text-[#2a1408] shadow transition hover:bg-white"
-          >
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
+          {/* On phones the close button stays in reach while the profile scrolls */}
+          <div className="sticky top-0 z-20 h-0 sm:contents">
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={onClose}
+              aria-label="Close"
+              className="absolute top-4 right-4 z-10 grid h-11 w-11 place-items-center rounded-full bg-white/90 text-[#2a1408] shadow transition hover:bg-white"
+            >
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
 
           <div className="grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-            <div className="relative aspect-[4/5] md:aspect-auto md:min-h-[520px]">
+            <div className="relative aspect-square sm:aspect-[4/5] md:aspect-auto md:min-h-[520px]">
               <Image src={m.image} alt={`${m.name}, ${m.role}`} fill sizes="(min-width: 768px) 40vw, 100vw" className="object-cover object-[50%_22%]" priority />
-              <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent md:hidden" aria-hidden="true" />
+              <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/75 via-black/30 to-transparent sm:h-1/3 sm:from-black/40 sm:via-transparent md:hidden" aria-hidden="true" />
+              {/* Phones: the name sits on the portrait */}
+              <div className="absolute inset-x-6 bottom-6 sm:hidden">
+                <p className="text-[max(0.62rem,9px)] font-bold tracking-[0.24em] text-[#f2c230] uppercase">{m.role}</p>
+                <p className="mt-2 font-display text-[2.6rem] leading-none text-white">{m.name}</p>
+              </div>
             </div>
-            <div className="p-7 sm:p-10">
-              <p className="eyebrow flex items-center gap-3">
+            <div className="p-6 sm:p-10">
+              <p className="eyebrow flex items-center gap-3 max-sm:hidden">
                 {m.role}
               </p>
-              <h3 className="mt-4 font-display text-5xl leading-none font-medium text-[#2a1408] sm:text-6xl">{m.name}</h3>
-              <div className="mt-6 flex gap-8 border-y border-[#e8731a]/15 py-4">
+              <h3 className="mt-4 font-display text-5xl leading-none font-medium text-[#2a1408] max-sm:sr-only sm:text-6xl">{m.name}</h3>
+              <div className="mt-6 flex gap-8 border-y border-[#e8731a]/15 py-4 max-sm:mt-0">
                 <div>
                   <p className="font-display text-3xl text-[#c2520e]">{m.films.length}</p>
                   <p className="mt-1 text-[max(0.6rem,9px)] font-bold tracking-[0.18em] text-[#9a7558] uppercase">Films produced</p>
@@ -185,9 +238,10 @@ function ProfileSheet({ m, onClose }: { m: Profile; onClose: () => void }) {
           </div>
 
           {m.films.length > 0 && (
-            <div className="border-t border-[#e8731a]/15 p-7 sm:p-10">
+            <div className="border-t border-[#e8731a]/15 p-6 pb-10 sm:p-10">
               <p className="text-[max(0.66rem,9px)] font-bold tracking-[0.24em] text-[#c2520e] uppercase">Films</p>
-              <ul className="mt-5 grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-6">
+              <FilmRows films={m.films} onClose={onClose} />
+              <ul className="mt-5 grid grid-cols-3 gap-3 max-sm:hidden sm:grid-cols-5 lg:grid-cols-6">
                 {m.films.map((f) => (
                   <li key={f.slug}>
                     <Link href={`/films/${f.slug}`} onClick={onClose} className="group block">
@@ -210,6 +264,36 @@ function ProfileSheet({ m, onClose }: { m: Profile; onClose: () => void }) {
       </div>
     </motion.div>,
     document.body,
+  );
+}
+
+/** Phones: the four as small portraits, two side by side, each with its name on it. Tapping one opens the profile. */
+function PhonePillars({ members, onOpen }: { members: Profile[]; onOpen: (m: Profile) => void }) {
+  return (
+    <ul className="mt-7 grid grid-cols-2 gap-3 sm:hidden">
+      {members.map((m, i) => (
+        <Reveal as="li" key={m.name} delay={(i % 2) * 0.06}>
+          <button
+            type="button"
+            onClick={() => onOpen(m)}
+            aria-label={`${m.name}: view profile`}
+            className="relative block aspect-[4/5] w-full overflow-hidden rounded-[16px] bg-[#f3e2c6] text-left shadow-[0_18px_34px_-22px_rgba(59,26,7,0.6)]"
+          >
+            <Image src={m.image} alt={`${m.name}, ${m.role}`} fill sizes="46vw" className="object-cover object-[50%_22%]" />
+            <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#1c0d05]/90 via-[#1c0d05]/45 to-transparent" />
+            <span aria-hidden="true" className="absolute top-2.5 right-2.5 grid h-7 w-7 place-items-center rounded-full bg-white/90 text-[#2a1408] shadow-[0_4px_12px_-4px_rgba(0,0,0,0.45)]">
+              <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M8 3v10M3 8h10" />
+              </svg>
+            </span>
+            <span className="absolute inset-x-3 bottom-3">
+              <span className="block font-display text-[1.15rem] leading-tight text-white">{m.name}</span>
+              <span className="mt-1 line-clamp-2 block text-[max(0.55rem,9px)] leading-snug font-bold tracking-[0.12em] text-[#f2c230] uppercase">{m.role}</span>
+            </span>
+          </button>
+        </Reveal>
+      ))}
+    </ul>
   );
 }
 
@@ -289,6 +373,28 @@ export function Backbones({ members }: { members: Profile[] }) {
   const headOpacity = useTransform(p, (v) => between(v, 0.44, 0.58));
   const headY = useTransform(p, (v) => 18 * (1 - between(v, 0.44, 0.58)));
   const lead = members[0];
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || l.wide) return;
+    const phone = window.matchMedia("(max-width: 767px)");
+    // Pinned so that the section sliding over it (the reel, next) has covered the screen by the
+    // time it reaches the top: when the reel is shorter than this section, it pins a little later,
+    // once its heading has gone by.
+    const over = el.nextElementSibling as HTMLElement | null;
+    const set = () => {
+      const h = el.offsetHeight;
+      el.style.top = phone.matches ? `${Math.min(0, window.innerHeight - h, (over?.offsetHeight ?? h) - h)}px` : "";
+    };
+    set();
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+    if (over) ro.observe(over);
+    window.addEventListener("resize", set);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", set);
+    };
+  }, [l.wide]);
 
   const heading = (
     <>
@@ -306,9 +412,10 @@ export function Backbones({ members }: { members: Profile[] }) {
   // Phones, small windows and reduced motion: the same people, simply laid out.
   if (!l.wide || reduce) {
     return (
-      <section ref={ref} className="shell py-24">
+      <section ref={ref} className="shell py-16 max-md:sticky max-md:top-0 max-md:bg-[#fffdf9] max-md:pt-16 max-md:pb-10 sm:py-24">
         <Reveal>{heading}</Reveal>
-        <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4">
+        <PhonePillars members={members} onOpen={setOpen} />
+        <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 max-sm:hidden sm:grid-cols-4">
           {members.map((m, i) => (
             <Reveal key={m.name} delay={(i % 2) * 0.08}>
               <button type="button" onClick={() => setOpen(m)} className="group block w-full cursor-pointer text-left outline-none" aria-label={`${m.name}: view profile`}>
@@ -320,7 +427,8 @@ export function Backbones({ members }: { members: Profile[] }) {
             </Reveal>
           ))}
         </div>
-        <p className="mt-10 text-[max(0.65rem,9px)] text-dim">{credits}</p>
+        {/* Phones: each photo is credited in its profile instead */}
+        <p className="mt-10 text-[max(0.65rem,9px)] leading-relaxed text-dim max-sm:hidden">{credits}</p>
         {sheet}
       </section>
     );

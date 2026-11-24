@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { ReleaseWall } from "@/components/distribution/ReleaseWall";
 import { JourneyIntro } from "@/components/journey/JourneyIntro";
 import { Timeline } from "@/components/journey/Timeline";
@@ -33,6 +34,12 @@ export default function DistributionPage() {
 
   return (
     <div className="theme-light type-classic bg-[#fffdf9]" data-header-theme="light">
+      {/* Phones: a clean top, then the eras and every release as boards */}
+      <section className="shell pt-7 pb-6 sm:hidden">
+        <h1 className="font-display text-[2.2rem] leading-none text-[#2a1408]">Distribution</h1>
+        <p className="mt-2 text-[0.8rem] leading-relaxed text-[#8a6a52]">Bringing films to Telugu screens since 1999, its own and other banners&rsquo;. Tap an era for its story.</p>
+      </section>
+      <div className="max-sm:hidden">
       <JourneyIntro
         title={
           <>
@@ -47,26 +54,32 @@ export default function DistributionPage() {
         }
         posters={collage}
       />
+      </div>
 
-      <div className="mt-8">
+      <div className="mt-8 max-sm:mt-0">
         <Timeline items={distributionJourney.map((m) => ({ ...m, detail: distributionDetail(m) }))} label="Distribution milestones" heading={{ eyebrow: "1997 to 2026", title: "Era by era" }} />
       </div>
 
       {/* Every release */}
-      <section id="releases" className="shell scroll-mt-28 pt-24 pb-28">
+      <section id="releases" className="shell scroll-mt-28 pt-24 pb-28 max-sm:pt-14 max-sm:pb-6">
         <Reveal>
-          <h2 className="display text-3xl sm:text-4xl">Every release</h2>
+          <h2 className="display text-3xl max-sm:text-[1.75rem] sm:text-4xl">Every release</h2>
         </Reveal>
-        <div className="mt-8">
+        <div className="mt-8 max-sm:mt-5">
           <ReleaseWall records={distribution} />
         </div>
-        <p className="mt-16 max-w-3xl text-xs leading-relaxed text-dim">
+        <p className="mt-16 max-w-3xl text-xs leading-relaxed text-dim max-sm:mt-10">
           This index records public distribution relationships, not production credits. Original films belong to their credited producers. Posters marked &ldquo;SVC&rdquo; are the banner&rsquo;s own films and open their pages; territories are shown as reported. Posters of other banners&rsquo; films are shown for identification and belong to their rights holders.
         </p>
       </section>
 
       {/* The films it brought to the screen, behind the line. */}
-      <section data-header-theme="dark" className="relative overflow-hidden bg-[#1c0d05]">
+      {/* Phones: the ways on, plainly */}
+      <nav aria-label="Next" className="shell mt-4 flex flex-col items-start gap-4 sm:hidden">
+        <Link href="/production" className="inline-flex items-center gap-2 text-[0.7rem] font-bold tracking-[0.22em] text-[#2a1408] uppercase">The production journey <span aria-hidden="true">&rarr;</span></Link>
+        <Link href="/contact" className="inline-flex items-center gap-2 text-[0.7rem] font-bold tracking-[0.22em] text-[#2a1408] uppercase">Distribution enquiries <span aria-hidden="true">&rarr;</span></Link>
+      </nav>
+      <section data-header-theme="dark" className="relative overflow-hidden bg-[#1c0d05] max-sm:hidden">
         <div aria-hidden="true" className="grid grid-cols-6 gap-1.5 p-1.5 opacity-70 sm:grid-cols-9 lg:grid-cols-12">
           {wall.map((t) => (
             <div key={t.key} className="relative aspect-[2/3] overflow-hidden rounded-[3px]">

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { posterWall, type PosterTile } from "@/data/posters";
+import { filmPosters, posterWall, type PosterTile } from "@/data/posters";
 import { letterGrid, letterOutline } from "@/data/svcLetterCells";
 import { ArrowIcon } from "@/components/ui/Buttons";
 
@@ -33,6 +33,18 @@ function seeded(seed: number) {
   };
 }
 
+/** A catalogue poster as a letter tile. */
+function catalogueTile(slug: string, title: string, year: number): PosterTile {
+  const p = filmPosters[slug];
+  return { slug, title, year, lg: p.lg, sm: p.sm, position: "50% 50%", official: true, source: p.source };
+}
+
+/** Posters kept out of the letters, each with the film that takes its cell (one not otherwise in them). */
+const LETTER_SWAPS: Record<string, PosterTile> = {
+  "nootokka-jillala-andagadu-2021": catalogueTile("sarileru-neekevvaru-2020", "Sarileru Neekevvaru", 2020),
+};
+const forLetters = (t: PosterTile) => LETTER_SWAPS[t.slug] ?? t;
+
 /** One poster per cell of the letters (47 cells, 47 productions), each with its own throw. */
 const TILES = (() => {
   const rand = seeded(2003);
@@ -44,7 +56,7 @@ const TILES = (() => {
   return letterGrid.cells.map(([col, row], i) => ({
     col,
     row,
-    poster: posterWall[order[i % order.length]],
+    poster: forLetters(posterWall[order[i % order.length]]),
     from: { x: rand() * 1.3 - 0.15, y: rand() * 1.3 - 0.15 }, // start, as a fraction of the screen
     spin: (rand() - 0.5) * 80,
     delay: rand() * 1.0,
@@ -213,7 +225,7 @@ function Extras({ show }: { show: boolean }) {
       animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
       transition={{ duration: 0.9, ease: EASE, delay: show ? 0.25 : 0 }}
     >
-      <p className="flex items-center gap-3 text-[max(0.66rem,9px)] font-semibold tracking-[0.34em] text-[#9a7558] uppercase sm:text-[0.72rem]">
+      <p className="flex items-center gap-3 text-[max(0.66rem,9px)] font-semibold tracking-[0.34em] text-[#9a7558] uppercase max-sm:hidden sm:text-[0.72rem]">
         <span className="hidden h-px w-8 bg-gradient-to-r from-transparent to-[#e8731a] sm:block" />
         Telugu cinema since 2003 · Hyderabad
         <span className="hidden h-px w-8 bg-gradient-to-l from-transparent to-[#e8731a] sm:block" />
@@ -222,7 +234,7 @@ function Extras({ show }: { show: boolean }) {
         <Link
           href="/films"
           tabIndex={show ? undefined : -1}
-          className="group inline-flex items-center gap-3 bg-[linear-gradient(180deg,#e8731a,#c2520e)] px-7 py-3.5 text-[0.72rem] font-bold tracking-[0.2em] text-white uppercase shadow-[0_12px_28px_-12px_rgba(194,82,14,0.7)] transition-[filter] hover:brightness-110"
+          className="group inline-flex items-center gap-3 bg-[linear-gradient(180deg,#e8731a,#c2520e)] px-7 py-3.5 text-[0.72rem] font-bold tracking-[0.2em] text-white uppercase shadow-[0_12px_28px_-12px_rgba(194,82,14,0.7)] transition-[filter] hover:brightness-110 max-sm:bg-none max-sm:px-0 max-sm:py-1.5 max-sm:gap-2 max-sm:text-[0.62rem] max-sm:tracking-[0.2em] max-sm:text-[#3b1a07] max-sm:shadow-none"
         >
           Explore our films
           <ArrowIcon className="transition-transform group-hover:translate-x-1" />
@@ -230,7 +242,7 @@ function Extras({ show }: { show: boolean }) {
         <a
           href="#showreel"
           tabIndex={show ? undefined : -1}
-          className="group inline-flex items-center gap-3 text-[0.7rem] font-bold tracking-[0.22em] text-[#3b1a07]/75 uppercase transition-colors hover:text-[#3b1a07]"
+          className="group inline-flex items-center gap-3 max-sm:hidden text-[0.7rem] font-bold tracking-[0.22em] text-[#3b1a07]/75 uppercase transition-colors hover:text-[#3b1a07]"
         >
           <span className="link-underline pb-1">Watch the showreel</span>
           <span className="grid h-9 w-9 place-items-center rounded-full border border-[#e8731a]/40 text-[#c2520e] transition group-hover:border-[#c2520e]">
@@ -261,8 +273,13 @@ export function SvcLockup({
   const branded = still || stage === "brand";
   return (
     <div className="flex flex-col items-center gap-[clamp(1.1rem,3vh,2.5rem)]">
-      <div className="flex items-center gap-[clamp(0.75rem,2.4vw,2.5rem)] [--lw:min(68vw,1240px)] sm:[--lw:min(62vw,1240px,110svh)]">
-        <div className="relative aspect-[606/906] h-[calc(var(--lw)/2.72*1.22)] shrink-0" style={{ visibility: branded ? "visible" : "hidden" }}>
+      {/* Wide screens: the god symbol beside the letters. Phones: the letters take the full width
+          and Lord Venkateswara rises softly behind them, his lower half melting into the word. */}
+      <div className="relative flex items-center gap-[clamp(0.75rem,2.4vw,2.5rem)] max-sm:isolate [--lw:min(90vw,47svh)] max-sm:pt-[calc(var(--lw)*0.6)] sm:[--lw:min(62vw,1240px,110svh)]">
+        <div
+          data-lockup-deity className="relative aspect-[606/906] h-[calc(var(--lw)/2.72*1.22)] shrink-0 max-sm:pointer-events-none max-sm:absolute max-sm:bottom-[calc(var(--lw)/2.72*0.45)] max-sm:left-1/2 max-sm:-z-10 max-sm:h-[calc(var(--lw)*0.8)] max-sm:-translate-x-1/2 max-sm:opacity-60 max-sm:blur-[1px] max-sm:[mask-image:linear-gradient(180deg,#000_50%,transparent_92%)]"
+          style={{ visibility: branded ? "visible" : "hidden" }}
+        >
           <motion.div
             key={branded ? "on" : "off"}
             className="absolute inset-0"

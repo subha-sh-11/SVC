@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState, type MouseEvent, type RefObject } from "react";
-import { nav } from "@/data/site";
+import { nav, socials } from "@/data/site";
+import { SOCIAL_ICONS } from "@/components/ui/SocialIcons";
 import { cn } from "@/lib/utils";
 import { useIntroDone } from "@/components/providers/IntroProvider";
 import { useLenis } from "@/components/providers/SmoothScroll";
@@ -34,7 +35,7 @@ export function Logo({ compact = false, onLight = false, onSaffron = false }: { 
 // Three grey bars that fold into a cross.
 function MenuIcon({ open }: { open: boolean }) {
   return (
-    <span className="relative grid h-6 w-7 place-items-center" aria-hidden="true">
+    <span className="relative grid h-6 w-7 place-items-center max-md:scale-[0.72]" aria-hidden="true">
       <motion.span className="absolute h-[2px] w-7 rounded-full bg-current" animate={open ? { rotate: 45, y: 0 } : { rotate: 0, y: -8 }} />
       <motion.span className="absolute h-[2px] w-7 rounded-full bg-current" animate={{ opacity: open ? 0 : 1 }} />
       <motion.span className="absolute h-[2px] w-7 rounded-full bg-current" animate={open ? { rotate: -45, y: 0 } : { rotate: 0, y: 8 }} />
@@ -104,6 +105,19 @@ export function Header() {
 
   useEffect(() => setOpen(false), [pathname]);
 
+  // While the full-screen menu is open, the page behind it stays put.
+  useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement;
+    const prev = root.style.overflow;
+    root.style.overflow = "hidden";
+    lenis?.stop();
+    return () => {
+      root.style.overflow = prev;
+      lenis?.start();
+    };
+  }, [open, lenis]);
+
   // Close on Escape or a click anywhere else.
   useEffect(() => {
     if (!open) return;
@@ -134,7 +148,7 @@ export function Header() {
     {/* Home: Lord Venkateswara and "SVC", always in the top-left corner, straight on the page */}
     <motion.div
       ref={logoRef}
-      className={cn("fixed top-5 left-4 z-[79] transition-opacity sm:top-6 sm:left-8", open && "max-md:pointer-events-none max-md:opacity-0")}
+      className={cn("fixed top-5 left-4 z-[79] transition-opacity max-md:hidden sm:top-6 sm:left-8", open && "max-lg:pointer-events-none max-lg:opacity-0")}
       initial={{ opacity: 0 }}
       animate={{ opacity: introDone ? 1 : 0 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -203,40 +217,67 @@ export function Header() {
         </ul>
       </div>
 
-      {/* Phones and tablets: the pages fold away behind a menu button */}
+      {/* Phones and tablets: the menu button opens a full-screen page list (it sits behind the
+          button, inside the nav, so the button stays on top to close it) */}
       <AnimatePresence>
         {open && (
           <motion.div
             id="site-menu"
             key="menu"
-            className="mr-1.5 overflow-hidden rounded-full bg-white/90 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.35)] ring-1 ring-black/[0.06] backdrop-blur-md lg:hidden"
-            initial={{ clipPath: "inset(0 0 0 100% round 999px)" }}
-            animate={{ clipPath: "inset(0 0 0 0% round 999px)" }}
-            exit={{ clipPath: "inset(0 0 0 100% round 999px)" }}
-            transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
+            data-lenis-prevent
+            className="fixed inset-0 -z-10 flex flex-col items-center overflow-y-auto overscroll-contain bg-[#fffaf3]/75 px-7 pt-20 pb-[max(1.75rem,env(safe-area-inset-bottom))] text-center backdrop-blur-2xl backdrop-saturate-150 sm:pt-24 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
           >
-            <ul className="no-scrollbar flex max-w-[calc(100vw-5.25rem)] items-center overflow-x-auto px-2 py-1.5 sm:px-3" data-lenis-prevent>
-              {MENU.map((item, i) => (
-                <motion.li
-                  key={item.href}
-                  className="shrink-0"
-                  initial={{ opacity: 0, x: 14 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.12 + (MENU.length - 1 - i) * 0.035, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <Link
-                    href={item.href}
-                    aria-current={isActive(item.href) ? "page" : undefined}
-                    className={cn(
-                      "block rounded-full px-3 py-2 text-[0.68rem] font-semibold tracking-[0.16em] whitespace-nowrap uppercase transition-colors sm:px-3.5",
-                      isActive(item.href) ? "text-saffron-deep" : "text-[#5f5f5f] hover:bg-black/[0.04] hover:text-[#222]",
-                    )}
+            <ul className="relative my-auto py-6">
+              {MENU.map((item, i) => {
+                const active = isActive(item.href);
+                return (
+                  <motion.li
+                    key={item.href}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.22 + i * 0.045, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    {item.label}
-                  </Link>
-                </motion.li>
-              ))}
+                    <Link
+                      href={item.href}
+                      onClick={item.href === "/" ? toTop : undefined}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        "block py-[clamp(0.6rem,1.7svh,0.95rem)] font-sans text-[0.98rem] font-semibold tracking-[0.26em] uppercase transition-colors",
+                        active ? "text-saffron-deep" : "text-[#1f0f06] hover:text-saffron-deep",
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.li>
+                );
+              })}
             </ul>
+
+            <motion.div
+              className="relative flex flex-col items-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.55, duration: 0.6 }}
+            >
+              <ul className="flex items-center gap-6" aria-label="Follow SVC">
+                {socials.map((s) => (
+                  <li key={s.label}>
+                    <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="block h-6 w-6 text-[#2a1408] transition-colors hover:text-saffron-deep [&>svg]:h-full [&>svg]:w-full">
+                      {SOCIAL_ICONS[s.label] ?? s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-[0.78rem] leading-relaxed text-[#8a6a52]">
+                Sri Venkateswara Creations · Hyderabad
+                <br />
+                Telugu cinema since 2003
+              </p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

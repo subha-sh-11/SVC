@@ -30,6 +30,8 @@ const SOUND_FROM = 0.5;
 const BAND_TOP = 72;
 /** The glow: a tiny copy of the current frame, stretched to fill (cheap, and always in step with him). */
 const GLOW = { w: 48, h: 27, everyMs: 120 };
+/** The longest of his quotes: phones size the section's foot from it. */
+const LONGEST = speeches.reduce((a, b) => (b.quote.length > a.quote.length ? b : a), speeches[0]);
 
 type Box = { x: number; y: number; w: number; h: number };
 
@@ -66,6 +68,7 @@ function Words({
   fill,
   go,
   setSoundOn,
+  phone,
 }: {
   progress: MotionValue<number>;
   clip: Speech;
@@ -73,6 +76,8 @@ function Words({
   fill: MotionValue<number>;
   go: (i: number) => void;
   setSoundOn: (on: boolean, chosen?: boolean) => void;
+  /** Phones: just his words (his name is on the film, which opens the full video). */
+  phone: boolean;
 }) {
   const openTrailer = useTrailer();
   const words = useMemo(() => clip.quote.split(" "), [clip]);
@@ -102,14 +107,18 @@ function Words({
           </p>
         </motion.blockquote>
       </AnimatePresence>
-      <motion.p style={{ clipPath: signClip }} className="mt-4 inline-block font-hand text-[clamp(2rem,2.8vw,2.9rem)] leading-none font-semibold text-saffron-deep">
-        Dil Raju
-      </motion.p>
-      <motion.p style={{ opacity: roleOpacity }} className="mt-1 text-[max(0.58rem,9px)] font-semibold tracking-[0.22em] text-[#6f4b2f] uppercase">
-        Founder &amp; producer · {clip.context}
-      </motion.p>
-      <ClipBars index={index} fill={fill} go={go} />
-      <div className="mt-3 flex flex-wrap items-center gap-2.5">
+      {!phone && (
+        <>
+          <motion.p style={{ clipPath: signClip }} className="mt-4 inline-block font-hand text-[clamp(2rem,2.8vw,2.9rem)] leading-none font-semibold text-saffron-deep">
+            Dil Raju
+          </motion.p>
+          <motion.p style={{ opacity: roleOpacity }} className="mt-1 text-[max(0.58rem,9px)] font-semibold tracking-[0.22em] text-[#6f4b2f] uppercase">
+            Founder &amp; producer · {clip.context}
+          </motion.p>
+          <ClipBars index={index} fill={fill} go={go} />
+        </>
+      )}
+      <div className={phone ? "hidden" : "mt-3 flex flex-wrap items-center gap-2.5"}>
         <button
           type="button"
           onClick={() => {
@@ -121,7 +130,7 @@ function Words({
           Watch full video
         </button>
       </div>
-      <p className="mt-3 text-[max(0.6rem,9px)] text-[#6f4b2f]/80">
+      <p className={phone ? "mt-5 text-[max(0.6rem,9px)] text-[#6f4b2f]/80" : "mt-3 text-[max(0.6rem,9px)] text-[#6f4b2f]/80"}>
         Video: {clip.uploader}
         {clip.translated ? " · translated from Telugu" : ""}
       </p>
@@ -153,6 +162,7 @@ export function HomeOpening() {
   const maskId = useId();
   const reduce = useReducedMotion();
   const introDone = useIntroDone();
+  const openTrailer = useTrailer();
   const onScreen = useInView(stageRef, { amount: 0.25 });
   const [mounted, setMounted] = useState(false);
   const [vp, setVp] = useState({ w: 1440, h: 900 });
@@ -252,7 +262,7 @@ export function HomeOpening() {
   const live = mounted && introDone && onScreen;
   const [inSoundZone, setInSoundZone] = useState(false);
   useMotionValueEvent(scroll, "change", (v) => setInSoundZone(v > SOUND_FROM));
-  const hearable = live && (inSoundZone || Boolean(reduce));
+  const hearable = live && wide && (inSoundZone || Boolean(reduce));
   const [blocked, setBlocked] = useState(false);
 
   const go = useCallback(
@@ -335,6 +345,22 @@ export function HomeOpening() {
     return () => cancelAnimationFrame(raf);
   }, [live, fill]);
 
+  // Phones: the band and his words fill only the top of the stage. The section after rises into
+  // the empty foot as the pin ends (a negative bottom margin), so his words lead straight into it.
+  // Sized from the longest quote, so it holds steady whichever clip is playing.
+  const measureRef = useRef<HTMLDivElement>(null);
+  const [wordsH, setWordsH] = useState(0);
+  useEffect(() => {
+    const el = measureRef.current;
+    if (wide || !el) return;
+    const set = () => setWordsH(el.offsetHeight);
+    set();
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [wide, mounted]);
+  const tail = wide || !wordsH ? 0 : Math.max(0, Math.round(vp.h - (BAND_TOP + (vp.w * 9) / 16 + 28 + wordsH) - 36));
+
   if (!speeches.length) return <HomeHero />;
 
   const roleOf = (i: number) => (i === clip ? "current" : i === prev ? "prev" : i === next && loadNext ? "next" : null);
@@ -396,12 +422,32 @@ export function HomeOpening() {
       />
     </motion.div>
   );
+  // Phones: his name on the film; tapping the film opens the whole speech.
+  const bandLabel = !wide && (
+    <motion.button
+      type="button"
+      onClick={() => {
+        const c = speeches[clipRef.current];
+        setSoundOn(false);
+        openTrailer({ youtubeId: c.videoId, title: "Dil Raju", label: c.context, start: c.start });
+      }}
+      aria-label="Dil Raju, founder and producer: watch the full video"
+      className="absolute inset-x-0 overflow-hidden rounded-[14px] text-left"
+      style={{ top: BAND_TOP, height: (vp.w * 9) / 16, opacity: wordsOpacity, pointerEvents: wordsEvents }}
+    >
+      <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
+      <span className="absolute bottom-3.5 left-4">
+        <span className="block font-hand text-[1.9rem] leading-none font-semibold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">Dil Raju</span>
+        <span className="mt-1 block text-[max(0.58rem,9px)] font-bold tracking-[0.22em] text-white/85 uppercase">Founder &amp; producer</span>
+      </span>
+    </motion.button>
+  );
   const words = (
     <motion.div
       className={wide ? "absolute top-1/2 left-[max(1.5rem,5vw)] w-[min(34vw,560px)] -translate-y-1/2" : "absolute inset-x-5"}
       style={{ ...(wide ? {} : { top: BAND_TOP + (vp.w * 9) / 16 + 28 }), opacity: wordsOpacity, y: wordsRise, pointerEvents: wordsEvents }}
     >
-      <Words progress={p} clip={speeches[clip]} index={clip} fill={fill} go={go} setSoundOn={setSoundOn} />
+      <Words progress={p} clip={speeches[clip]} index={clip} fill={fill} go={go} setSoundOn={setSoundOn} phone={!wide} />
     </motion.div>
   );
 
@@ -415,6 +461,7 @@ export function HomeOpening() {
           {!wide && glow}
           {film}
           {wide && glow}
+          {bandLabel}
           {words}
         </div>
       </>
@@ -422,7 +469,7 @@ export function HomeOpening() {
   }
 
   return (
-    <div ref={ref} className="relative h-[380svh]">
+    <div ref={ref} className="relative h-[380svh]" style={tail ? { marginBottom: -tail } : undefined}>
       <div ref={stageRef} className="sticky top-0 h-[100svh] min-h-[560px] overflow-hidden bg-[#fffdf9]">
         {/* The film, under everything (with its glow behind it on phones) */}
         {!wide && glow}
@@ -457,8 +504,16 @@ export function HomeOpening() {
           <HomeHero />
         </motion.div>
 
-        {/* His words, in the glow */}
+        {/* His words, in the glow (on phones, his name on the film above them) */}
+        {bandLabel}
         {words}
+        {!wide && (
+          <div ref={measureRef} aria-hidden="true" className="pointer-events-none invisible absolute inset-x-5 top-0">
+            <p className="text-[max(0.66rem,9px)] font-bold tracking-[0.32em] uppercase">In his words</p>
+            <p className="mt-4 font-display text-[clamp(1.1rem,1.85vw,2rem)] leading-[1.28] italic">{LONGEST.quote}</p>
+            <p className="mt-5 text-[max(0.6rem,9px)]">Video: {LONGEST.uploader}{LONGEST.translated ? " · translated from Telugu" : ""}</p>
+          </div>
+        )}
       </div>
       {/* Where the scroll cue takes you: Dil Raju, speaking. */}
       <div id="the-banner" aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[100svh]" />

@@ -1,12 +1,16 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import type { Film, FilmCategory } from "@/data/types";
 import { standing } from "@/data/standing";
 import { upcoming } from "@/data/upcoming";
+import { filmPosters } from "@/data/posters";
 import { cn } from "@/lib/utils";
+import { PIN_SHAPES, PinBoard, twoColumns } from "@/components/ui/Pins";
 import { ComingSoonTile, FilmTile, hasLandscapePoster, type TileSize } from "./FilmTile";
 import { FilmPreview } from "./FilmPreview";
 
@@ -42,6 +46,52 @@ function sizeFor(f: Film): TileSize {
 }
 
 const byRelease = (a: Film, b: Film) => (a.releaseDate ?? String(a.year)).localeCompare(b.releaseDate ?? String(b.year));
+
+/**
+ * Phones: the films as a Pinterest-style board. Mostly the official posters at their own shape,
+ * every so often a still from the film for variety; the title and year under each. Tapping a pin
+ * opens the same preview as the shelf. The films on the way close the board.
+ */
+function PhoneFilmBoard({ films, onOpen, closing }: { films: Film[]; onOpen: (film: Film, from: HTMLElement, viaKeyboard: boolean) => void; closing: boolean }) {
+  const pins = films.map((f, i) => {
+    const poster = filmPosters[f.slug];
+    const still = i % 7 === 3 && f.image ? f.image : null;
+    const ratio = still ? PIN_SHAPES[i % PIN_SHAPES.length] : poster ? poster.h / poster.w : 1.45;
+    return { f, src: still ?? poster?.sm ?? f.image ?? null, ratio };
+  });
+  type Pin = (typeof pins)[number] | "next";
+  const [left, right] = twoColumns<Pin>(closing ? [...pins, "next"] : pins, (p) => (p === "next" ? 1.2 : p.ratio + 0.3));
+  const render = (p: Pin) =>
+    p === "next" ? (
+      <Link key="next" href="/upcoming" className="block rounded-[16px] bg-[linear-gradient(160deg,#e8731a,#9a3c08)] p-4 text-white shadow-[0_12px_26px_-16px_rgba(154,60,8,0.7)]">
+        <span className="block text-[max(0.58rem,9px)] font-bold tracking-[0.22em] text-white/80 uppercase">Coming next</span>
+        <ul className="mt-3 space-y-2">
+          {NEXT_UP.map((n) => (
+            <li key={n.title}>
+              <span className="block font-display text-[1.02rem] leading-tight">{n.title}</span>
+              {n.release && <span className="block text-[0.66rem] text-white/75">{n.release}</span>}
+            </li>
+          ))}
+        </ul>
+        <span className="mt-4 inline-block text-[max(0.6rem,9px)] font-bold tracking-[0.18em] uppercase">Upcoming films &rarr;</span>
+      </Link>
+    ) : (
+      <button key={p.f.slug} type="button" onClick={(e) => onOpen(p.f, e.currentTarget, false)} className="block w-full text-left" aria-label={`${p.f.title} (${p.f.year})`}>
+        <span className="relative block overflow-hidden rounded-[16px] bg-[#f1e4cf] shadow-[0_10px_24px_-16px_rgba(59,26,7,0.55)]" style={{ aspectRatio: `1 / ${p.ratio}` }}>
+          {p.src ? (
+            <Image src={p.src} alt="" fill sizes="48vw" className="object-cover" />
+          ) : (
+            <span className="absolute inset-0 grid place-items-center bg-[linear-gradient(150deg,#e8731a,#7a2c06)] p-3 text-center font-display text-lg leading-tight text-white">{p.f.title}</span>
+          )}
+        </span>
+        <span className="mt-2 line-clamp-2 block px-0.5 text-[0.8rem] leading-snug font-semibold text-[#2a1408]">{p.f.title}</span>
+        <span className="mt-0.5 block px-0.5 text-[0.66rem] text-[#9a7558]">
+          {p.f.year} · {p.f.roleLabel}
+        </span>
+      </button>
+    );
+  return <PinBoard className="mt-6 sm:hidden" left={left.map(render)} right={right.map(render)} />;
+}
 
 /** The films, first to latest, as a bento shelf of posters. */
 export function FilmsExplorer({ films, lead, onDark = false }: { films: Film[]; /** The page title, on the same line as the tabs. */ lead?: ReactNode; /** The row sits over a film: white type. */ onDark?: boolean }) {
@@ -169,8 +219,36 @@ export function FilmsExplorer({ films, lead, onDark = false }: { films: Film[]; 
 
   return (
     <div>
+      {/* Phones: the title, a search bar and the categories as chips */}
+      <div className="sm:hidden">
+        <p className="font-display text-[2.2rem] leading-none text-[#2a1408]">Our films</p>
+        <p className="mt-2 text-[0.8rem] text-[#8a6a52]">{results.length} films, from Dil in 2003 to today</p>
+        <label className="mt-5 flex items-center gap-2.5 rounded-full bg-[#f3ece3] px-4 py-2.5">
+          <span className="sr-only">Search films</span>
+          <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0 text-[#8a6a52]" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+            <circle cx="9" cy="9" r="6" />
+            <path d="m14 14 4 4" strokeLinecap="round" />
+          </svg>
+          <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search a film" className="w-full bg-transparent text-[0.88rem] text-[#2a1408] outline-none placeholder:text-[#9a7558]" />
+        </label>
+        <div className="no-scrollbar -mx-4 mt-4 flex gap-6 overflow-x-auto border-b border-[#2a1408]/10 px-4" role="tablist" aria-label="Credit role">
+          {CATS.map((c) => (
+            <button
+              key={c.key}
+              role="tab"
+              aria-selected={cat === c.key}
+              onClick={() => setCat(c.key)}
+              className={cn("relative shrink-0 pb-2.5 text-[0.84rem] font-semibold transition-colors", cat === c.key ? "text-[#2a1408]" : "text-[#9a7558]")}
+            >
+              {c.label}
+              {cat === c.key && <span aria-hidden="true" className="absolute inset-x-0 -bottom-px h-[2px] bg-saffron-deep" />}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* The title, the categories and search, on one line */}
-      <div className={cn("flex flex-col gap-5 border-b lg:flex-row lg:items-end lg:justify-between", onDark ? "border-white/30" : "border-paper/15")}>
+      <div className={cn("flex flex-col gap-5 border-b max-sm:hidden lg:flex-row lg:items-end lg:justify-between", onDark ? "border-white/30" : "border-paper/15")}>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:gap-16">
           {lead && <div className="lg:pb-3">{lead}</div>}
           <div className="no-scrollbar -mx-4 flex gap-7 overflow-x-auto px-4 sm:mx-0 sm:px-0" role="tablist" aria-label="Credit role">
@@ -216,7 +294,9 @@ export function FilmsExplorer({ films, lead, onDark = false }: { films: Film[]; 
           </button>
         </div>
       ) : (
-        <div className="films-bento-wrap mt-8">
+        <>
+        <PhoneFilmBoard films={results} onOpen={openPreview} closing={showClosing} />
+        <div className="films-bento-wrap mt-8 max-sm:hidden">
           <motion.ol ref={gridRef} layout className="films-bento relative">
             <AnimatePresence mode="popLayout" initial={false}>
               {results.map((f, i) => {
@@ -251,6 +331,7 @@ export function FilmsExplorer({ films, lead, onDark = false }: { films: Film[]; 
             </AnimatePresence>
           </motion.ol>
         </div>
+        </>
       )}
 
       <AnimatePresence>{preview && <FilmPreview key={preview.slug} film={preview} onClose={closePreview} />}</AnimatePresence>

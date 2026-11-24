@@ -195,7 +195,7 @@ export function Ventures() {
   }, []);
 
   return (
-    <section id="ventures" aria-labelledby="ventures-title" className="relative bg-[#fffaf3] py-24 sm:py-32">
+    <section id="ventures" aria-labelledby="ventures-title" className="relative bg-[#fffaf3] py-16 max-md:hidden sm:py-32">
       <div className="shell-narrow">
         <Reveal y={14}>
           <p className="eyebrow flex items-center gap-3">
@@ -219,7 +219,7 @@ export function Ventures() {
           <aside className="hidden lg:block" aria-label="Ventures by year">
             <YearColumn active={active} go={go} />
           </aside>
-          <ol className="space-y-20 sm:space-y-28 lg:space-y-36">
+          <ol className="space-y-16 sm:space-y-28 lg:space-y-36">
             {ventures.map((v, i) => (
               <VentureCard key={v.key} v={v} i={i} onActive={onActive} />
             ))}
@@ -227,7 +227,7 @@ export function Ventures() {
         </div>
 
         {/* In public office */}
-        <div className="mt-24 sm:mt-32">
+        <div className="mt-16 sm:mt-32">
           <Reveal y={14}>
             <p className="eyebrow flex items-center gap-3">
               In public office

@@ -18,8 +18,8 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const FADE_S = 0.9;
 /** A film's synopsis steps aside once its trailer has been on screen this long. */
 const SETTLE_S = 6;
-/** Phones: the clips play in a 16:9 band this far from the top, over a glow of the clip itself. */
-const BAND_TOP = 72;
+/** Phones: the clips play in a 16:9 band at the top of the section; the glow of the clip fills the rest, behind the words. */
+const BAND_TOP = 0;
 const GLOW = { w: 48, h: 27, everyMs: 120 };
 const POSTERS = new Map(posterWall.filter((t) => t.official).map((t) => [t.slug, t.lg]));
 
@@ -36,7 +36,7 @@ function ArrowIcon({ back = false }: { back?: boolean }) {
 
 function InfoIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 sm:h-5 sm:w-5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
       <circle cx="12" cy="12" r="9.5" />
       <path d="M12 11v6M12 7.5v.5" strokeLinecap="round" />
     </svg>
@@ -48,15 +48,15 @@ function FilmBillboard({ film, settled, onPlay }: { film: Film; settled: boolean
   const logo = titleLogos[film.slug];
   return (
     <div className="min-w-0 max-w-[min(100%,40rem)]">
-      <p className="flex items-center gap-2.5 text-[0.7rem] font-bold tracking-[0.42em] text-white/80 uppercase">
-        <span aria-hidden="true" className="svc-mark svc-mark--bright block aspect-[2003/736] h-[1.05rem]" />
+      <p className="flex items-center gap-2.5 text-[0.62rem] font-bold tracking-[0.3em] text-white/80 uppercase sm:text-[0.7rem] sm:tracking-[0.42em]">
+        <span aria-hidden="true" className="svc-mark svc-mark--bright block aspect-[2003/736] h-[0.9rem] sm:h-[1.05rem]" />
         Film
       </p>
-      <h2 className={cn(logo ? "sr-only" : "mt-4 text-[clamp(2.2rem,5.4vw,5rem)] leading-[0.98] font-semibold tracking-[-0.02em]")}>{film.title}</h2>
+      <h2 className={cn(logo ? "sr-only" : "mt-3 text-[1.8rem] leading-[0.98] font-semibold tracking-[-0.02em] sm:mt-4 sm:text-[clamp(2.2rem,5.4vw,5rem)]")}>{film.title}</h2>
       {logo && (
-        <motion.div className="mt-4 origin-bottom-left" animate={{ scale: settled ? 0.78 : 1 }} transition={{ duration: 1.2, ease: EASE }}>
+        <motion.div className="mt-3 origin-bottom-left sm:mt-4" animate={{ scale: settled ? 0.78 : 1 }} transition={{ duration: 1.2, ease: EASE }}>
           {/* eslint-disable-next-line @next/next/no-img-element -- official title logo, sized by height */}
-          <img src={logo} alt="" className="h-[clamp(64px,15vh,180px)] w-auto max-w-full object-contain object-left drop-shadow-[0_6px_24px_rgba(0,0,0,0.55)]" />
+          <img src={logo} alt="" className="h-[52px] w-auto max-w-full sm:h-[clamp(64px,15vh,180px)] object-contain object-left drop-shadow-[0_6px_24px_rgba(0,0,0,0.55)]" />
         </motion.div>
       )}
       <motion.div
@@ -65,35 +65,35 @@ function FilmBillboard({ film, settled, onPlay }: { film: Film; settled: boolean
         animate={settled ? { opacity: 0, height: 0, marginTop: 0 } : { opacity: 1, height: "auto", marginTop: 18 }}
         transition={{ duration: 1, ease: EASE }}
       >
-        <p className="text-[0.78rem] font-semibold text-white/70">
+        <p className="text-[0.72rem] font-semibold text-white/70 sm:text-[0.78rem]">
           <span className="text-[#46d369]">{film.year}</span>
           {film.genre && <span> · {film.genre}</span>}
           {film.director && <span> · Directed by {film.director}</span>}
         </p>
         {film.premise && (
-          <p className="mt-2.5 line-clamp-3 text-[clamp(0.95rem,1.25vw,1.2rem)] leading-snug text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">{film.premise}</p>
+          <p className="mt-2 line-clamp-2 text-[0.84rem] leading-snug sm:mt-2.5 sm:line-clamp-3 sm:text-[clamp(0.95rem,1.25vw,1.2rem)] text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">{film.premise}</p>
         )}
       </motion.div>
-      <div className="mt-6 flex flex-wrap items-center gap-3">
+      <div className="mt-4 flex flex-wrap items-center gap-2 sm:mt-6 sm:gap-3">
         {film.trailer && (
           <button
             type="button"
             onClick={onPlay}
             aria-label={`Play the ${film.title} trailer`}
-            className="inline-flex items-center gap-2.5 rounded-[4px] bg-white px-6 py-2.5 text-[1.05rem] font-semibold text-black transition-colors hover:bg-white/75 sm:px-7 sm:text-lg"
+            className="inline-flex items-center gap-1.5 rounded-[4px] bg-white px-3.5 py-1.5 text-[0.78rem] font-semibold text-black transition-colors hover:bg-white/75 sm:gap-2.5 sm:px-7 sm:py-2.5 sm:text-lg"
           >
-            <PlayIcon className="h-5 w-5" />
+            <PlayIcon className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
             Play
           </button>
         )}
         <Link
           href={`/films/${film.slug}`}
-          className="inline-flex items-center gap-2.5 rounded-[4px] bg-[rgba(109,109,110,0.7)] px-6 py-2.5 text-[1.05rem] font-semibold text-white transition-colors hover:bg-[rgba(109,109,110,0.45)] sm:px-7 sm:text-lg"
+          className="inline-flex items-center gap-1.5 rounded-[4px] bg-[rgba(109,109,110,0.7)] px-3.5 py-1.5 text-[0.78rem] font-semibold text-white transition-colors hover:bg-[rgba(109,109,110,0.45)] sm:gap-2.5 sm:px-7 sm:py-2.5 sm:text-lg"
         >
           <InfoIcon />
           More info
         </Link>
-        <span className="text-[0.75rem] font-medium text-white/65 md:hidden">{film.roleLabel}</span>
+        <span className="text-[0.68rem] font-medium text-white/65 sm:text-[0.75rem] md:hidden">{film.roleLabel}</span>
       </div>
     </div>
   );
@@ -104,7 +104,7 @@ function UpcomingBillboard({ up, settled, onPlay }: { up: ReelUpcoming; settled:
   const people = [up.cast.join(" · "), up.director ? `Directed by ${up.director}` : ""].filter(Boolean).join(" · ");
   return (
     <div className="min-w-0 max-w-[min(100%,42rem)]">
-      <p className="flex items-center gap-2.5 text-[0.7rem] font-bold tracking-[0.42em] text-[#f2c230] uppercase">
+      <p className="flex items-center gap-2.5 text-[0.62rem] font-bold tracking-[0.3em] text-[#f2c230] uppercase sm:text-[0.7rem] sm:tracking-[0.42em]">
         <span className="relative flex h-2 w-2" aria-hidden="true">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#f2c230] opacity-60" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-[#f2c230]" />
@@ -112,7 +112,7 @@ function UpcomingBillboard({ up, settled, onPlay }: { up: ReelUpcoming; settled:
         Coming soon
       </p>
       <motion.h2
-        className="mt-4 origin-bottom-left font-title text-[clamp(2.6rem,6vw,5.6rem)] leading-[0.95] tracking-[0.01em] text-white uppercase [text-shadow:0_6px_30px_rgba(0,0,0,0.55)]"
+        className="mt-3 origin-bottom-left font-title text-[1.9rem] leading-[0.95] sm:mt-4 sm:text-[clamp(2.6rem,6vw,5.6rem)] tracking-[0.01em] text-white uppercase [text-shadow:0_6px_30px_rgba(0,0,0,0.55)]"
         animate={{ scale: settled ? 0.8 : 1 }}
         transition={{ duration: 1.2, ease: EASE }}
       >
@@ -124,7 +124,7 @@ function UpcomingBillboard({ up, settled, onPlay }: { up: ReelUpcoming; settled:
         animate={settled ? { opacity: 0, height: 0, marginTop: 0 } : { opacity: 1, height: "auto", marginTop: 16 }}
         transition={{ duration: 1, ease: EASE }}
       >
-        <p className="text-[0.82rem] font-semibold text-white/75">
+        <p className="text-[0.74rem] font-semibold text-white/75 sm:text-[0.82rem]">
           {/* Wide screens show when it is due in the corner card */}
           <span className="text-[#f2c230] md:hidden">
             {up.when}
@@ -133,24 +133,84 @@ function UpcomingBillboard({ up, settled, onPlay }: { up: ReelUpcoming; settled:
           {people}
         </p>
       </motion.div>
-      <div className="mt-6 flex flex-wrap items-center gap-3">
+      <div className="mt-4 flex flex-wrap items-center gap-2 sm:mt-6 sm:gap-3">
         <button
           type="button"
           onClick={onPlay}
           aria-label={`Play the ${up.title} ${up.label.toLowerCase()}`}
-          className="inline-flex items-center gap-2.5 rounded-[4px] bg-white px-6 py-2.5 text-[1.05rem] font-semibold text-black transition-colors hover:bg-white/75 sm:px-7 sm:text-lg"
+          className="inline-flex items-center gap-1.5 rounded-[4px] bg-white px-3.5 py-1.5 text-[0.78rem] font-semibold text-black transition-colors hover:bg-white/75 sm:gap-2.5 sm:px-7 sm:py-2.5 sm:text-lg"
         >
-          <PlayIcon className="h-5 w-5" />
+          <PlayIcon className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
           Play
         </button>
         <Link
           href={`/upcoming#${up.slug}`}
-          className="inline-flex items-center gap-2.5 rounded-[4px] bg-[rgba(109,109,110,0.7)] px-6 py-2.5 text-[1.05rem] font-semibold text-white transition-colors hover:bg-[rgba(109,109,110,0.45)] sm:px-7 sm:text-lg"
+          className="inline-flex items-center gap-1.5 rounded-[4px] bg-[rgba(109,109,110,0.7)] px-3.5 py-1.5 text-[0.78rem] font-semibold text-white transition-colors hover:bg-[rgba(109,109,110,0.45)] sm:gap-2.5 sm:px-7 sm:py-2.5 sm:text-lg"
         >
           <InfoIcon />
           More info
         </Link>
-        <span className="text-[0.75rem] font-medium text-white/65 md:hidden">{up.banner}</span>
+        <span className="text-[0.68rem] font-medium text-white/65 sm:text-[0.75rem] md:hidden">{up.banner}</span>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Phones: under the clip, in its glow: what it is and when, the title, who is in it, and the two ways
+ * in. The glow fades into the page below.
+ */
+function PhoneDetails({ items, index, onPlay }: { items: Item[]; index: number; onPlay: () => void }) {
+  const it = items[index];
+  const up = it.up;
+  const film = it.film;
+  const people = up
+    ? [up.cast.join(", "), up.director && `Directed by ${up.director}`].filter(Boolean).join(" · ")
+    : film
+      ? [film.genre, film.director && `Directed by ${film.director}`].filter(Boolean).join(" · ")
+      : "";
+  return (
+    <div className="shell relative z-20 flex flex-col pb-20" style={{ paddingTop: "calc(56.25vw + 1.4rem)" }}>
+      {/* A steady height whichever film is showing, so what is pinned above never shifts */}
+      <div className="min-h-[12.5rem]">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={it.key}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } }}
+          exit={{ opacity: 0, y: -6, transition: { duration: 0.25, ease: "easeIn" } }}
+        >
+          <p className="flex items-center gap-2 text-[max(0.6rem,9px)] font-bold tracking-[0.26em] uppercase">
+            {up ? (
+              <>
+                <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#f2c230] opacity-60" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#f2c230]" />
+                </span>
+                <span className="text-[#f2c230]">Coming soon</span>
+                {up.when.toLowerCase() !== "coming soon" && <span className="text-white/55">· {up.when}</span>}
+              </>
+            ) : (
+              <>
+                <span className="text-[#f2c230]">{film?.roleLabel}</span>
+                <span className="text-white/55">· {film?.year}</span>
+              </>
+            )}
+          </p>
+          <h2 className="mt-2.5 font-title text-[1.7rem] leading-[1.02] tracking-[0.01em] text-white uppercase">{it.title}</h2>
+          {people && <p className="mt-2 line-clamp-2 text-[0.74rem] leading-snug text-white/65">{people}</p>}
+          {film?.premise && <p className="mt-2 line-clamp-2 text-[0.8rem] leading-snug text-white/85">{film.premise}</p>}
+          <div className="mt-4 flex items-center gap-7">
+            <button type="button" onClick={onPlay} className="inline-flex items-center gap-2 py-1.5 text-[0.7rem] font-bold tracking-[0.22em] text-white uppercase">
+              <PlayIcon className="h-2.5 w-2.5" />
+              Play
+            </button>
+            <Link href={up ? `/upcoming#${up.slug}` : `/films/${film?.slug}`} className="inline-flex items-center gap-2 py-1.5 text-[0.7rem] font-bold tracking-[0.22em] text-white/75 uppercase">
+              More info <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </div>
+        </motion.div>
+      </AnimatePresence>
       </div>
     </div>
   );
@@ -163,7 +223,17 @@ function UpcomingBillboard({ up, settled, onPlay }: { up: ReelUpcoming; settled:
  * has clicked, tapped or pressed a key on the page; until then a sound button shows), pauses off
  * screen and while a full trailer is open.
  */
-export function Showreel({ films }: { films: Film[] }) {
+export function Showreel({
+  films,
+  overlap = false,
+  fadeTo,
+}: {
+  films: Film[];
+  /** Phones: it slides up over the pinned section before it. */
+  overlap?: boolean;
+  /** Phones: the colour of the section below, which the glow fades into. */
+  fadeTo?: string;
+}) {
   const items = useMemo<Item[]>(
     () => [
       ...reelUpcoming.map((u) => ({ key: `up-${u.slug}`, hd: u.hd, sd: u.sd, uhd: u.uhd, poster: u.poster, title: u.title, up: u })),
@@ -368,11 +438,13 @@ export function Showreel({ films }: { films: Film[] }) {
       data-header-theme="dark"
       aria-roledescription="carousel"
       aria-label="Showreel"
-      className="relative isolate min-h-[100svh] overflow-hidden bg-[#170d06] text-white"
+      className={`relative isolate overflow-hidden bg-[#170d06] text-white md:min-h-[100svh] ${overlap ? "max-md:z-10 max-md:shadow-[0_-28px_60px_-24px_rgba(0,0,0,0.55)]" : ""}`}
     >
       {/* Phones: the glow of the clip fills the section behind its band */}
       <canvas ref={glowRef} width={GLOW.w} height={GLOW.h} aria-hidden="true" className="absolute inset-0 -z-10 h-full w-full md:hidden" />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[rgba(23,13,6,0.62)] md:hidden" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[rgba(23,13,6,0.55)] md:hidden" />
+      {/* Phones: the glow fades into the page below, no edge */}
+      {fadeTo && <div aria-hidden="true" className="absolute inset-x-0 bottom-0 z-10 h-20 md:hidden" style={{ background: `linear-gradient(180deg, transparent, ${fadeTo})` }} />}
 
       {/* The clips: full screen on wide screens; a 16:9 band at the top on phones */}
       <div className="absolute inset-x-0 aspect-video overflow-hidden md:inset-0 md:aspect-auto" style={wide ? undefined : { top: BAND_TOP }}>
@@ -415,13 +487,13 @@ export function Showreel({ films }: { films: Film[] }) {
       {/* Previous and next: on the clip itself (on phones, on its band) */}
       <div
         className="pointer-events-none absolute inset-x-0 z-30 flex items-center justify-between px-3 sm:px-5 md:top-1/2 md:-translate-y-1/2"
-        style={wide ? undefined : { top: `calc(${BAND_TOP}px + 28.125vw - 1.5rem)` }}
+        style={wide ? undefined : { top: `calc(${BAND_TOP}px + 28.125vw - 1.125rem)` }}
       >
         <button
           type="button"
           onClick={() => go(index - 1)}
           aria-label={`Previous: ${items[(index - 1 + n) % n].title}`}
-          className="pointer-events-auto grid h-12 w-12 place-items-center rounded-full bg-black/40 text-white ring-1 ring-white/25 transition hover:bg-black/65 hover:ring-white/60 md:h-14 md:w-14"
+          className="pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-black/40 text-white ring-1 ring-white/25 transition hover:bg-black/65 hover:ring-white/60 md:h-14 md:w-14"
         >
           <ArrowIcon back />
         </button>
@@ -434,7 +506,7 @@ export function Showreel({ films }: { films: Film[] }) {
           <span className="hidden max-w-[16rem] translate-x-2 truncate rounded-full bg-black/55 px-4 py-2 text-[0.72rem] font-semibold tracking-[0.12em] text-white uppercase opacity-0 ring-1 ring-white/15 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100 md:block">
             Next · {items[next].title}
           </span>
-          <span className="grid h-12 w-12 place-items-center rounded-full bg-black/40 text-white ring-1 ring-white/25 transition group-hover:bg-black/65 group-hover:ring-white/60 md:h-14 md:w-14">
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-black/40 text-white ring-1 ring-white/25 transition group-hover:bg-black/65 group-hover:ring-white/60 md:h-14 md:w-14">
             <ArrowIcon />
           </span>
         </button>
@@ -459,10 +531,18 @@ export function Showreel({ films }: { films: Film[] }) {
         </span>
       </button>
 
+      {!wide && (
+        <PhoneDetails
+          items={items}
+          index={index}
+          onPlay={() => (up ? watch(up.youtubeId, up.title, up.label) : film?.trailer && watch(film.trailer, film.title))}
+        />
+      )}
+
       {/* The words over the clip */}
       <div
-        className="shell relative z-20 flex min-h-[100svh] flex-col pb-16 md:justify-end md:pt-28 md:pb-20"
-        style={wide ? undefined : { paddingTop: `calc(${BAND_TOP}px + 56.25vw + 1.75rem)` }}
+        className={`shell relative z-20 flex flex-col pb-10 md:min-h-[100svh] md:justify-end md:pt-28 md:pb-20 ${wide ? "" : "hidden"}`}
+        style={wide ? undefined : { paddingTop: `calc(${BAND_TOP}px + 56.25vw + 1.5rem)` }}
       >
         <div className="flex items-end justify-between gap-8">
           <AnimatePresence mode="wait">

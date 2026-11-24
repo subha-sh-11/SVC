@@ -47,24 +47,34 @@ function Poster({ f, sizes, className }: { f: MilestoneFilm; sizes: string; clas
 /** A film the milestone is about: its poster, who made it, who is in it, and its story. */
 function FeatureFilm({ f, compact }: { f: MilestoneFilm; compact: boolean }) {
   return (
-    <article className={cn("grid gap-5 rounded-2xl bg-[#fbf3e6] p-5 ring-1 ring-[#e8731a]/10", compact ? "grid-cols-[96px_1fr] sm:grid-cols-[112px_1fr]" : "grid-cols-[110px_1fr] sm:grid-cols-[160px_1fr] sm:gap-7 sm:p-7")}>
-      <Poster f={f} sizes={compact ? "112px" : "160px"} />
-      <div className="min-w-0">
+    <article
+      className={cn(
+        "grid items-start gap-x-5 gap-y-4 rounded-2xl bg-[#fbf3e6] p-5 ring-1 ring-[#e8731a]/10 sm:grid-rows-[auto_1fr] sm:gap-y-0",
+        compact ? "grid-cols-[96px_1fr] sm:grid-cols-[112px_1fr]" : "grid-cols-[110px_1fr] sm:grid-cols-[160px_1fr] sm:gap-x-7 sm:p-7",
+      )}
+    >
+      <Poster f={f} sizes={compact ? "112px" : "160px"} className="sm:row-span-2" />
+      {/* Beside the poster: what the film is. On phones the premise then runs the full width below. */}
+      <div className="min-w-0 self-center sm:self-start">
         <h4 className={cn("display leading-tight", compact ? "text-2xl" : "text-3xl sm:text-4xl")}>
           {f.title} <span className="font-sans text-[0.5em] font-normal text-dim">{f.year}</span>
         </h4>
         {f.note && <p className="mt-1.5 text-[0.85rem] font-semibold text-saffron-deep">{f.note}</p>}
         {f.cast && f.cast.length > 0 && <p className="mt-1 text-[0.85rem] text-mute">Starring {f.cast.join(", ")}</p>}
-        {f.premise && <p className={cn("mt-3 leading-relaxed text-paper/80", compact ? "line-clamp-4 text-[0.88rem]" : "text-[0.95rem] sm:text-[1rem]")}>{f.premise}</p>}
-        {f.href && (
-          <Go
-            href={f.href}
-            className="mt-4 inline-flex items-center gap-2 rounded-full bg-saffron-deep px-4 py-2 text-[0.68rem] font-bold tracking-[0.16em] text-white uppercase transition-colors hover:bg-paper"
-          >
-            {f.href === "/upcoming" ? "Upcoming films" : "View film"} <ArrowIcon />
-          </Go>
-        )}
       </div>
+      {(f.premise || f.href) && (
+        <div className="col-span-2 min-w-0 sm:col-span-1 sm:col-start-2">
+          {f.premise && <p className={cn("leading-relaxed text-paper/80 sm:mt-3", compact ? "line-clamp-4 text-[0.88rem]" : "text-[0.95rem] sm:text-[1rem]")}>{f.premise}</p>}
+          {f.href && (
+            <Go
+              href={f.href}
+              className="mt-4 inline-flex items-center gap-2 rounded-full bg-saffron-deep px-4 py-2 text-[0.68rem] font-bold tracking-[0.16em] text-white uppercase transition-colors hover:bg-paper"
+            >
+              {f.href === "/upcoming" ? "Upcoming films" : "View film"} <ArrowIcon />
+            </Go>
+          )}
+        </div>
+      )}
     </article>
   );
 }

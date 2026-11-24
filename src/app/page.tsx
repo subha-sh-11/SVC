@@ -45,11 +45,14 @@ export default function HomePage() {
       {/* The hero zooms out into Dil Raju's portrait and the banner's story */}
       <HomeOpening />
 
-      {/* Him, and the others who built the banner */}
-      <Backbones members={backbone} />
+      {/* On phones the pillars stay pinned and the reel slides up over them; this keeps the pin to the two */}
+      <div className="relative">
+        {/* Him, and the others who built the banner */}
+        <Backbones members={backbone} />
 
-      {/* The reel: the banner's intro, then the films on the way and the films made */}
-      <Showreel films={heroFilms} />
+        {/* The reel: the banner's intro, then the films on the way and the films made */}
+        <Showreel films={heroFilms} overlap fadeTo="#fdf5ea" />
+      </div>
 
       {/* What he started beyond the banner, and the offices he has held */}
       <Ventures />
@@ -58,29 +61,22 @@ export default function HomePage() {
       <AwardsShowcase />
 
       {/* Launchpad */}
-      <section className="shell-narrow py-28 sm:py-36">
+      <section className="shell-narrow py-20 sm:py-36">
         <SectionHeader
           eyebrow="A launchpad for filmmakers"
           title="First films, first chances."
           italic={["chances."]}
           description="Directors whose first features came through SVC — named examples from the banner's history, not a complete count."
+          descriptionOnPhones={false}
         />
         <Launchpad debuts={debuts} />
       </section>
 
       {/* Upcoming: on the page itself, stills of the films on the way gliding by */}
-      <section id="upcoming" className="relative overflow-hidden py-20 sm:py-24">
+      <section id="upcoming" className="relative overflow-hidden pt-20 pb-6 sm:py-24">
         <div className="shell flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <Reveal y={14}>
-            <p className="eyebrow flex items-center gap-3">
-              Coming soon
-            </p>
-            <h2 className="display mt-5 text-4xl leading-[1.04] sm:text-5xl lg:text-6xl">
-              Stories in <span className="text-gold-gradient italic">development</span>
-            </h2>
-            <p className="mt-5 max-w-xl text-[0.95rem] leading-relaxed text-balance text-mute">
-              Discover announced projects and follow the latest updates from <span className="whitespace-nowrap">Sri Venkateswara Creations.</span>
-            </p>
+            <h2 className="eyebrow">Coming soon</h2>
           </Reveal>
           <Reveal y={14} delay={0.15} className="lg:pb-1">
             <Link href="/upcoming" className="text-[0.7rem] font-bold tracking-[0.24em] whitespace-nowrap text-paper uppercase transition-colors hover:text-gold">
@@ -96,8 +92,8 @@ export default function HomePage() {
       </section>
 
       {/* Closing */}
-      <section className="relative overflow-hidden">
-        <div className="shell relative py-32 text-center sm:py-44">
+      <section className="relative overflow-hidden max-md:hidden">
+        <div className="shell relative py-24 text-center sm:py-44">
           <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_50%_50%,color-mix(in_oklab,var(--color-gold)_10%,transparent),transparent_70%)]" />
           <Reveal y={12}>
             <p className="eyebrow">Sri Venkateswara Creations</p>

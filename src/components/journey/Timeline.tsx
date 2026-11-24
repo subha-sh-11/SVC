@@ -7,6 +7,9 @@ import { formatDate } from "@/lib/utils";
 import { Reveal } from "@/components/ui/motion";
 import { MilestoneImage } from "./MilestoneArt";
 import { MilestoneSheet } from "./MilestoneSheet";
+import { PIN_SHAPES, PinBoard, twoColumns } from "@/components/ui/Pins";
+import { imageRatios } from "@/data/imageRatios";
+import { journeyImages } from "@/data/journeyImages";
 
 function yearOf(m: Milestone) {
   const y = /(\d{4})/.exec(m.date);
@@ -75,8 +78,11 @@ export function Timeline({ items, label = "Milestone timeline", heading }: { ite
       <div className="hidden lg:block">
         <HorizontalTimeline items={items} label={label} heading={heading} onOpen={onOpen} />
       </div>
-      <div className="lg:hidden">
+      <div className="max-sm:hidden lg:hidden">
         <VerticalTimeline items={items} label={label} heading={heading} onOpen={onOpen} />
+      </div>
+      <div className="sm:hidden">
+        <PhoneMilestones items={items} label={label} heading={heading} onOpen={onOpen} />
       </div>
       <AnimatePresence>{open && <MilestoneSheet key={open.title} m={open} onClose={onClose} />}</AnimatePresence>
     </>
@@ -166,6 +172,46 @@ function HorizontalTimeline({ items, label, heading, onOpen }: { items: Mileston
   );
 }
 
+/**
+ * Phones: the milestones as a Pinterest-style board. Each is a pin: its picture (whole) or its
+ * films' posters, then when, what kind of moment, and its title. Tapping a pin opens the whole story.
+ */
+function PhoneMilestones({ items, label, heading, onOpen }: { items: Milestone[]; label: string; heading?: Heading; onOpen: Open }) {
+  // A picture pin takes the picture's own shape (no wider than 16:9), so it shows whole; posters
+  // fanned out and title cards take the board's taller shapes.
+  const shape = (i: number) => {
+    const m = items[i];
+    if (m.posters?.length) return PIN_SHAPES[i % PIN_SHAPES.length];
+    const src = m.title in journeyImages ? journeyImages[m.title]?.src : m.image;
+    const r = src ? imageRatios[src] : undefined;
+    return r ? Math.max(0.5625, r) : PIN_SHAPES[i % PIN_SHAPES.length];
+  };
+  const [left, right] = twoColumns(items, (_, i) => shape(i) + 0.55);
+  const pin = (m: Milestone) => {
+    const i = items.indexOf(m);
+    return (
+      <button key={`${m.date}-${m.title}`} type="button" onClick={(e) => onOpen(m, e.currentTarget)} aria-haspopup="dialog" aria-label={`${m.title} (${displayDate(m)}): read more`} className="block w-full text-left">
+        <span className="relative block" style={{ aspectRatio: `1 / ${shape(i)}` }}>
+          <MilestoneImage m={m} sizes="48vw" className="!absolute inset-0 !aspect-auto !rounded-[16px] !shadow-[0_10px_24px_-16px_rgba(59,26,7,0.55)] [&_span.font-title]:!text-[1.35rem]" />
+        </span>
+        <span className="mt-2 block px-0.5 text-[max(0.58rem,9px)] font-bold tracking-[0.16em] text-saffron-deep uppercase">{displayDate(m)}</span>
+        <span className="mt-1 block px-0.5 font-display text-[1rem] leading-tight text-[#2a1408]">{m.title}</span>
+        <span className="mt-1 line-clamp-1 block px-0.5 text-[0.66rem] text-[#8a6a52]">{m.type}</span>
+      </button>
+    );
+  };
+  return (
+    <section className="shell" aria-label={label}>
+      {heading && (
+        <div className="mb-5">
+          <ReelHeading heading={heading} />
+        </div>
+      )}
+      <PinBoard left={left.map(pin)} right={right.map(pin)} />
+    </section>
+  );
+}
+
 function VerticalTimeline({ items, label, heading, onOpen }: { items: Milestone[]; label: string; heading?: Heading; onOpen: Open }) {
   const ref = useRef<HTMLOListElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.7", "end 0.6"] });
@@ -187,7 +233,7 @@ function VerticalTimeline({ items, label, heading, onOpen }: { items: Milestone[
             </span>
             <p className="tabular-nums tracking-[0.06em] text-xs text-gold">{displayDate(m)}</p>
             <p className="mt-2 text-[max(0.62rem,9px)] font-bold tracking-[0.22em] text-mute uppercase">{m.type}</p>
-            <h3 className="display mt-2 text-4xl">{m.title}</h3>
+            <h3 className="display mt-2 text-[1.9rem] leading-[1.08] sm:text-4xl">{m.title}</h3>
             <div className="mt-5">
               <MilestoneImage m={m} sizes="100vw" />
             </div>
